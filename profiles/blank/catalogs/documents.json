@@ -1,0 +1,11 @@
+[
+  {
+    "id": "hello",
+    "title": "Hello graph",
+    "file": "hello.md",
+    "status": "drafted",
+    "summary": "A one-document starter so `make build` produces a real graph.",
+    "covers": ["concept:knowledge-graphs"],
+    "argues": ["start-small"]
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "knowledge-graphs",
+    "label": "Knowledge graphs",
+    "summary": "Typed nodes and edges derived from a corpus.",
+    "definedIn": ["hello"]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "getting-started",
+    "title": "Getting started",
+    "file": "getting-started.md",
+    "status": "stable",
+    "summary": "Install Quill, define your first route, and render a page.",
+    "covers": ["module:router", "module:template-engine"]
+  },
+  {
+    "id": "routing-guide",
+    "title": "Routing guide",
+    "file": "routing-guide.md",
+    "status": "stable",
+    "summary": "How filesystem routes map to handlers.",
+    "covers": ["module:router"],
+    "argues": ["file-based-routing"]
+  },
+  {
+    "id": "caching-guide",
+    "title": "Caching guide",
+    "file": "caching-guide.md",
+    "status": "stable",
+    "summary": "The caching layer, cache keys, and invalidation.",
+    "covers": ["module:caching-layer"],
+    "argues": ["immutable-cache-keys"],
+    "cites": ["http-caching-rfc"],
+    "flagsOpenQuestion": ["cache-invalidation-api"]
+  },
+  {
+    "id": "architecture-decisions",
+    "title": "Architecture decisions",
+    "file": "architecture-decisions.md",
+    "status": "stable",
+    "summary": "The load-bearing design decisions behind Quill's request model.",
+    "covers": ["module:query-builder"],
+    "argues": ["ssr-by-default", "no-global-state"],
+    "flagsOpenQuestion": ["streaming-ssr"]
+  },
+  {
+    "id": "security-model",
+    "title": "Security model",
+    "file": "security-model.md",
+    "status": "in-progress",
+    "summary": "Sessions, cookies, and the threat model Quill defends against.",
+    "covers": ["module:auth"],
+    "argues": ["cookie-session-default"],
+    "cites": ["owasp-session"]
+  }
+]

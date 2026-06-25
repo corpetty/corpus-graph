@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "description": "Regex signals the harvester scans prose for, to propose candidate claims into a gitignored inbox. Tune these to your corpus's writing conventions. Machine recall only — a human promotes the load-bearing candidates into catalogs/claims.json.",
+
+  "boldSentence": {
+    "enabled": true,
+    "minWords": 4,
+    "maxWords": 60,
+    "description": "Full bold sentences **like this.** are treated as candidate thesis statements."
+  },
+
+  "markerPhrases": [
+    { "name": "where-i-land",   "pattern": "(?:where i land|here'?s where i land)\\b" },
+    { "name": "working-answer", "pattern": "\\b(?:working|current|provisional) answer\\b" },
+    { "name": "said-plain",     "pattern": "\\b(?:said plain|said differently|put plainly)\\b" },
+    { "name": "the-point-is",   "pattern": "\\bthe (?:point|claim|thesis|upshot) is\\b" }
+  ]
+}

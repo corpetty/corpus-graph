@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "description": "Drives the context-bundle exporter's projection. The build/BFS gathers a generous neighbourhood; this file decides what gets emitted, in what order, and which predicates are surfaced vs. suppressed. Curation lives here, not in the traversal.",
+
+  "defaultHop": 2,
+  "tokenBudget": 20000,
+
+  "neverRender": ["wikiLinks", "mentions", "covers", "cites", "definedIn", "partOf", "hasStatus"],
+
+  "sections": [
+    { "id": "summary",  "kind": "centerSummary", "title": null },
+    { "id": "claims",   "kind": "claimsWithEvidence", "nodeType": "Claim", "title": "Claims in scope",
+      "evidencePredicates": ["supports", "pressureTests"], "directPredicate": "argues" },
+    { "id": "contested", "kind": "contestedClaims", "title": "Contested claims (present as live tensions, not settled)" },
+    { "id": "questions", "kind": "questions", "nodeType": "Question", "title": "Open questions",
+      "resolvedTitle": "Resolved questions", "resolvedStatuses": ["resolved", "provisionally-resolved"] },
+    { "id": "concepts",  "kind": "nodeList", "nodeType": "Concept", "title": "Concepts in scope" },
+    { "id": "tensions",  "kind": "nodeList", "nodeType": "Tension", "title": "Tensions" },
+    { "id": "sources",   "kind": "sources", "nodeType": "Source", "title": "Sources in the neighbourhood" },
+    { "id": "related",   "kind": "nodeList", "nodeType": "Document", "title": "Related documents" },
+    { "id": "flags",     "kind": "editorialFlags", "title": "Editorial flags" }
+  ],
+
+  "editorialFlags": {
+    "unbackedClaim": "Claim in scope with no supports/pressureTests evidence edge — needs source backing.",
+    "contestedClaim": "Claim with both supporting and pressure-testing sources — keep it live.",
+    "skeletonCenter": "Center document is still a skeleton/not-started — bundle is thin by design."
+  }
+}

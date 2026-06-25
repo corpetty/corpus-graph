@@ -1,0 +1,40 @@
+[
+  {
+    "id": "ssr-by-default",
+    "label": "Server-side rendering is the default",
+    "status": "accepted",
+    "summary": "New routes render on the server unless explicitly marked client-only.",
+    "hasStatus": ["accepted"],
+    "dependsOn": ["issue:streaming-ssr"]
+  },
+  {
+    "id": "file-based-routing",
+    "label": "Routes are derived from the filesystem",
+    "status": "stable",
+    "summary": "A file at routes/foo.ts becomes the /foo handler; no central route table.",
+    "hasStatus": ["stable"],
+    "dependsOn": ["decision:no-global-state"]
+  },
+  {
+    "id": "immutable-cache-keys",
+    "label": "Cache keys are content-addressed and immutable",
+    "status": "accepted",
+    "summary": "A cache key is a hash of content + varying headers; keys never mutate in place.",
+    "hasStatus": ["accepted"],
+    "dependsOn": ["issue:cache-invalidation-api"]
+  },
+  {
+    "id": "no-global-state",
+    "label": "No global mutable state across requests",
+    "status": "stable",
+    "summary": "Each request gets an isolated context; nothing is shared mutably between requests.",
+    "hasStatus": ["stable"]
+  },
+  {
+    "id": "cookie-session-default",
+    "label": "Sessions default to signed cookies",
+    "status": "proposed",
+    "summary": "Session state lives in a signed, HttpOnly cookie unless a server store is configured.",
+    "hasStatus": ["proposed"]
+  }
+]

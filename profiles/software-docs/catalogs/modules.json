@@ -1,0 +1,7 @@
+[
+  { "id": "router", "label": "Router", "summary": "Maps incoming requests to handlers from the filesystem.", "definedIn": ["routing-guide"] },
+  { "id": "caching-layer", "label": "Caching layer", "summary": "Content-addressed response cache.", "definedIn": ["caching-guide"], "derivesFrom": ["router"] },
+  { "id": "template-engine", "label": "Template engine", "summary": "Renders server-side HTML.", "definedIn": ["getting-started"] },
+  { "id": "auth", "label": "Auth", "summary": "Session and identity primitives.", "definedIn": ["security-model"] },
+  { "id": "query-builder", "label": "Query builder", "summary": "Typed database query construction.", "definedIn": ["architecture-decisions"] }
+]

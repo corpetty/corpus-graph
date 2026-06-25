@@ -1,0 +1,8 @@
+// Programmatic entry point.
+export { loadContext, resolveProfile, REPO_ROOT } from './lib/config.js';
+export { buildGraph, emit } from './build-graph.js';
+export { buildBundle, loadGraph, resolveCenterId } from './context-bundle.js';
+export { harvest } from './harvest.js';
+export { aggregate } from './aggregate-interpretive.js';
+export { buildCatalog } from './build-catalog.js';
+export { checkEdge, typeOfId, evidencePredicates } from './direction-rules.js';

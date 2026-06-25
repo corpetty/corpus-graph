@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "description": "Projection for the software-docs profile. Same engine, sections mapped onto the renamed node types.",
+  "defaultHop": 2,
+  "tokenBudget": 20000,
+  "neverRender": ["wikiLinks", "mentions", "covers", "cites", "definedIn", "partOf", "hasStatus"],
+  "sections": [
+    { "id": "summary",   "kind": "centerSummary", "title": null },
+    { "id": "decisions", "kind": "claimsWithEvidence", "nodeType": "Decision", "title": "Decisions in scope",
+      "evidencePredicates": ["supports", "pressureTests"], "directPredicate": "argues" },
+    { "id": "contested", "kind": "contestedClaims", "nodeType": "Decision", "title": "Contested decisions (present as live trade-offs)" },
+    { "id": "issues",    "kind": "questions", "nodeType": "Issue", "title": "Open issues",
+      "resolvedTitle": "Resolved issues", "resolvedStatuses": ["resolved", "provisionally-resolved"] },
+    { "id": "modules",   "kind": "nodeList", "nodeType": "Module", "title": "Modules in scope" },
+    { "id": "tradeoffs", "kind": "nodeList", "nodeType": "Tradeoff", "title": "Trade-offs" },
+    { "id": "refs",      "kind": "sources", "nodeType": "Reference", "title": "References in the neighbourhood" },
+    { "id": "related",   "kind": "nodeList", "nodeType": "Page", "title": "Related pages" },
+    { "id": "flags",     "kind": "editorialFlags", "nodeType": "Decision", "title": "Editorial flags" }
+  ]
+}

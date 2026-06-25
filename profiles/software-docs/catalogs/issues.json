@@ -1,0 +1,15 @@
+[
+  {
+    "id": "streaming-ssr",
+    "label": "Should SSR stream by default?",
+    "status": "open",
+    "summary": "Streaming improves time-to-first-byte but complicates error handling and caching."
+  },
+  {
+    "id": "cache-invalidation-api",
+    "label": "What cache-invalidation API should we expose?",
+    "status": "provisionally-resolved",
+    "summary": "How callers purge or supersede cached responses without mutating keys.",
+    "workingAnswer": "Expose tag-based invalidation; keys stay immutable and tags map to key sets."
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "version": "0.1.0",
+  "name": "software-docs",
+  "description": "Example profile proving the kernel is domain-agnostic: the same engine, with node types renamed to a software-documentation domain. Page/Module/Decision/Issue/Reference/Maintainer/Tradeoff/Lifecycle map one-to-one onto the default Document/Concept/Claim/Question/Source/Author/Tension/Status. Predicate NAMES are kept (argues/supports/dependsOn/cites...) because that vocabulary is already domain-general; only the node types and their wiring change.",
+
+  "namespacePriority": ["page", "module", "decision", "issue", "ref", "person", "tradeoff", "lifecycle"],
+  "hubTransitTypes": ["Lifecycle"],
+
+  "nodeTypes": {
+    "Page":       { "ns": "page",      "color": "#4f8cff", "shape": "round-rectangle", "description": "A documentation page." },
+    "Module":     { "ns": "module",    "color": "#f59e0b", "shape": "round-tag",       "description": "An API surface / module / component the docs describe." },
+    "Decision":   { "ns": "decision",  "color": "#facc15", "shape": "round-tag",       "description": "A design decision or invariant the project commits to and must defend." },
+    "Issue":      { "ns": "issue",     "color": "#b45309", "shape": "concave-hexagon", "description": "An open design question / RFC-in-progress." },
+    "Reference":  { "ns": "ref",       "color": "#a855f7", "shape": "rectangle",       "description": "External spec, RFC, paper, or upstream issue." },
+    "Maintainer": { "ns": "person",    "color": "#7c3aed", "shape": "ellipse",         "description": "Author/owner of a Reference." },
+    "Tradeoff":   { "ns": "tradeoff",  "color": "#7f1d1d", "shape": "concave-hexagon", "description": "A known trade-off the project holds open." },
+    "Lifecycle":  { "ns": "lifecycle", "color": "#6b7280", "shape": "ellipse",         "description": "Lifecycle status (hub-transit: reachable, not traversed through)." }
+  },
+
+  "predicateCategories": {
+    "structural":  { "color": "#0ea5a3", "description": "Placement." },
+    "causal":      { "color": "#dc2626", "description": "Derivation." },
+    "provenance":  { "color": "#a855f7", "description": "Origin." },
+    "dialectical": { "color": "#b45309", "description": "Contestation + evidence." },
+    "claim":       { "color": "#facc15", "description": "Argument structure." },
+    "weak":        { "color": "#cbd5e1", "description": "Navigation only." }
+  },
+
+  "predicates": {
+    "partOf":            { "category": "structural",  "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Page"], "description": "Page belongs to a parent Page." },
+    "covers":            { "category": "structural",  "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Module", "Decision", "Issue", "Tradeoff"], "description": "Page documents this node." },
+    "hasStatus":         { "category": "structural",  "directed": true,  "subjectTypes": ["Page", "Decision"], "objectTypes": ["Lifecycle"], "description": "Node has this lifecycle status." },
+    "definedIn":         { "category": "provenance",  "directed": true,  "subjectTypes": ["Module"], "objectTypes": ["Page"], "description": "Module is primarily documented on this Page." },
+    "derivesFrom":       { "category": "causal",      "directed": true,  "subjectTypes": ["Module", "Decision"], "objectTypes": ["Module", "Decision"], "description": "X derives from Y." },
+    "cites":             { "category": "provenance",  "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Reference"], "description": "Page cites a Reference." },
+    "authoredBy":        { "category": "provenance",  "directed": true,  "subjectTypes": ["Reference"], "objectTypes": ["Maintainer"], "description": "Reference authored by Maintainer." },
+    "argues":            { "category": "claim",       "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Decision"], "description": "Page argues this Decision." },
+    "dependsOn":         { "category": "claim",       "directed": true,  "subjectTypes": ["Decision"], "objectTypes": ["Decision", "Issue"], "description": "Decision depends on another Decision or an open Issue." },
+    "supports":          { "category": "dialectical", "directed": true,  "subjectTypes": ["Reference"], "objectTypes": ["Decision", "Module"], "carriesEvidence": true, "description": "Reference supports this Decision/Module (edge carries quote + page + confidence + rationale)." },
+    "pressureTests":     { "category": "dialectical", "directed": true,  "subjectTypes": ["Reference"], "objectTypes": ["Decision", "Module"], "carriesEvidence": true, "description": "Reference pressure-tests this Decision/Module." },
+    "contradicts":       { "category": "dialectical", "directed": false, "subjectTypes": ["Decision", "Module"], "objectTypes": ["Decision", "Module"], "description": "Direct contradiction." },
+    "tensionWith":       { "category": "dialectical", "directed": false, "subjectTypes": ["Decision", "Module", "Tradeoff"], "objectTypes": ["Decision", "Module"], "description": "In tension with." },
+    "supersedes":        { "category": "dialectical", "directed": true,  "subjectTypes": ["Decision", "Page"], "objectTypes": ["Decision", "Page"], "description": "Replaces a prior version." },
+    "flagsOpenQuestion": { "category": "dialectical", "directed": true,  "subjectTypes": ["Page", "Decision"], "objectTypes": ["Issue"], "description": "Flags an open Issue the node rests on." },
+    "wikiLinks":         { "category": "weak",        "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Page", "Module", "Decision", "Issue", "Reference"], "description": "[[wikilink]] parsed from prose." },
+    "mentions":          { "category": "weak",        "directed": true,  "subjectTypes": ["Page"], "objectTypes": ["Module", "Decision", "Reference"], "description": "Free-text mention." }
+  },
+
+  "catalogLoaders": [
+    { "file": "catalogs/pages.json", "nodeType": "Page", "proseField": "file", "arrayFieldEdges": {
+      "partOf":            { "predicate": "partOf",            "dir": "out", "targetNs": "page" },
+      "covers":            { "predicate": "covers",            "dir": "out" },
+      "argues":            { "predicate": "argues",            "dir": "out", "targetNs": "decision" },
+      "cites":             { "predicate": "cites",             "dir": "out", "targetNs": "ref" },
+      "flagsOpenQuestion": { "predicate": "flagsOpenQuestion", "dir": "out", "targetNs": "issue" },
+      "hasStatus":         { "predicate": "hasStatus",         "dir": "out", "targetNs": "lifecycle" }
+    } },
+    { "file": "catalogs/modules.json", "nodeType": "Module", "arrayFieldEdges": {
+      "definedIn":   { "predicate": "definedIn",   "dir": "out", "targetNs": "page" },
+      "derivesFrom": { "predicate": "derivesFrom", "dir": "out", "targetNs": "module" }
+    } },
+    { "file": "catalogs/decisions.json", "nodeType": "Decision", "arrayFieldEdges": {
+      "dependsOn":  { "predicate": "dependsOn",  "dir": "out" },
+      "supersedes": { "predicate": "supersedes", "dir": "out", "targetNs": "decision" },
+      "hasStatus":  { "predicate": "hasStatus",  "dir": "out", "targetNs": "lifecycle" }
+    } },
+    { "file": "catalogs/issues.json", "nodeType": "Issue", "arrayFieldEdges": {} },
+    { "file": "catalogs/references.json", "nodeType": "Reference", "arrayFieldEdges": {
+      "authoredBy": { "predicate": "authoredBy", "dir": "out", "targetNs": "person" }
+    } },
+    { "file": "catalogs/maintainers.json", "nodeType": "Maintainer", "arrayFieldEdges": {} },
+    { "file": "catalogs/tradeoffs.json", "nodeType": "Tradeoff", "arrayFieldEdges": {
+      "tensionWith": { "predicate": "tensionWith", "dir": "out" },
+      "contradicts": { "predicate": "contradicts", "dir": "out" }
+    } }
+  ],
+
+  "statusType": "Lifecycle",
+  "statuses": ["proposed", "accepted", "stable", "deprecated"]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "corpus-graph",
+  "version": "0.1.0",
+  "description": "Turn any corpus into a typed knowledge graph and project it into citeable, bounded AI context bundles.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "bin": { "corpus-graph": "bin/corpus-graph.js" },
+  "scripts": {
+    "build": "node bin/corpus-graph.js build",
+    "context": "node bin/corpus-graph.js context",
+    "test": "node --test core/graph.test.js"
+  },
+  "exports": {
+    ".": "./core/index.js",
+    "./mcp": "./mcp/server.js"
+  },
+  "files": ["bin", "core", "config", "profiles", "mcp", "docs", "README.md"],
+  "dependencies": {},
+  "optionalDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}

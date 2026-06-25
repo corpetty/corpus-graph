@@ -1,0 +1,8 @@
+[
+  {
+    "id": "ssr-vs-static",
+    "label": "SSR latency vs static simplicity",
+    "summary": "Rendering on the server adds per-request cost but removes a build/deploy step; static is cheaper to serve but staler.",
+    "tensionWith": ["decision:ssr-by-default"]
+  }
+]

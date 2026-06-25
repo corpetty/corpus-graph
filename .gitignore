@@ -1,0 +1,12 @@
+# Derived graph artifacts (per-profile under data/<profile>/): nodes, edges,
+# build-stats, extraction-catalog, interpretive aggregate/notes, candidate inbox.
+# All reconstructable from committed inputs on a bare clone, so ignore the tree.
+data/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+*.swp

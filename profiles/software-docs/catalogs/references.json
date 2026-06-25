@@ -1,0 +1,5 @@
+[
+  { "id": "http-caching-rfc", "label": "RFC 9111: HTTP Caching", "kind": "rfc", "file": "refs/rfc9111.txt", "summary": "The IETF specification for HTTP caching semantics.", "authoredBy": ["fielding-et-al"] },
+  { "id": "web-almanac", "label": "Web Almanac 2023", "kind": "report", "file": "refs/almanac.txt", "summary": "HTTP Archive's annual data-driven report on the state of the web.", "authoredBy": ["http-archive"] },
+  { "id": "owasp-session", "label": "OWASP Session Management Cheat Sheet", "kind": "guide", "file": "refs/owasp.txt", "summary": "Security guidance for session handling.", "authoredBy": ["owasp"] }
+]

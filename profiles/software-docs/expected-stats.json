@@ -1,0 +1,30 @@
+{
+  "nodes": 28,
+  "edges": 46,
+  "warnings": 0,
+  "byNodeType": {
+    "Lifecycle": 4,
+    "Page": 5,
+    "Module": 5,
+    "Decision": 5,
+    "Issue": 2,
+    "Reference": 3,
+    "Maintainer": 3,
+    "Tradeoff": 1
+  },
+  "byPredicate": {
+    "covers": 6,
+    "argues": 5,
+    "cites": 2,
+    "flagsOpenQuestion": 2,
+    "definedIn": 5,
+    "derivesFrom": 1,
+    "dependsOn": 3,
+    "hasStatus": 5,
+    "authoredBy": 3,
+    "tensionWith": 1,
+    "wikiLinks": 8,
+    "supports": 3,
+    "pressureTests": 2
+  }
+}

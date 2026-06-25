@@ -1,0 +1,82 @@
+{
+  "version": "0.1.0",
+  "name": "default",
+  "description": "Domain-agnostic ontology skeleton. Eight node types and the six predicate categories that almost any knowledge corpus needs. Rename the types/predicates to your domain; keep the categories. This file is the single contract the build, the exporter, and the tests all read. The 'directed', 'subjectTypes', 'objectTypes', and 'carriesEvidence' fields are READ by the engine (not just documentation).",
+
+  "namespacePriority": ["document", "concept", "claim", "question", "source", "author", "tension", "status"],
+
+  "hubTransitTypes": ["Status"],
+
+  "nodeTypes": {
+    "Document": { "ns": "document", "color": "#4f8cff", "shape": "round-rectangle", "description": "A unit of the corpus you author: a chapter, a docs page, a research note, a wiki article." },
+    "Concept":  { "ns": "concept",  "color": "#f59e0b", "shape": "round-tag",       "description": "A named idea/term the corpus defines and reuses." },
+    "Claim":    { "ns": "claim",    "color": "#facc15", "shape": "round-tag",       "description": "A load-bearing assertion the corpus makes and must defend." },
+    "Question": { "ns": "question", "color": "#b45309", "shape": "concave-hexagon", "description": "An open problem the work is resolving; can gate a Document." },
+    "Source":   { "ns": "source",   "color": "#a855f7", "shape": "rectangle",       "description": "An external work you cite: paper, book, RFC, upstream issue." },
+    "Author":   { "ns": "author",   "color": "#7c3aed", "shape": "ellipse",         "description": "Who produced a Source." },
+    "Tension":  { "ns": "tension",  "color": "#7f1d1d", "shape": "concave-hexagon", "description": "A reified contradiction or trade-off the corpus holds open rather than hides." },
+    "Status":   { "ns": "status",   "color": "#6b7280", "shape": "ellipse",         "description": "Drafting/lifecycle status (a hub-transit type: reachable but not traversed through)." }
+  },
+
+  "predicateCategories": {
+    "structural":  { "color": "#0ea5a3", "description": "Where a thing sits: containment, grouping, placement." },
+    "causal":      { "color": "#dc2626", "description": "What causes/derives what." },
+    "provenance":  { "color": "#a855f7", "description": "Where a thing came from (validated)." },
+    "dialectical": { "color": "#b45309", "description": "What is contested: tensions, contradictions, supersession, evidence." },
+    "claim":       { "color": "#facc15", "description": "Argument structure: arguing, depending." },
+    "weak":        { "color": "#cbd5e1", "description": "Casual cross-links for navigation only — kept out of the argument graph." }
+  },
+
+  "predicates": {
+    "partOf":            { "category": "structural",  "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Document"], "description": "Document belongs to a parent Document." },
+    "covers":            { "category": "structural",  "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Concept", "Claim", "Question", "Tension"], "description": "Document discusses this node." },
+    "hasStatus":         { "category": "structural",  "directed": true,  "subjectTypes": ["Document", "Claim"], "objectTypes": ["Status"], "description": "Node has this lifecycle status." },
+    "definedIn":         { "category": "provenance",  "directed": true,  "subjectTypes": ["Concept"], "objectTypes": ["Document"], "description": "Concept has its primary development in this Document." },
+    "derivesFrom":       { "category": "causal",      "directed": true,  "subjectTypes": ["Concept", "Claim"], "objectTypes": ["Concept", "Claim"], "description": "X derives from Y." },
+    "cites":             { "category": "provenance",  "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Source"], "description": "Document cites a Source." },
+    "authoredBy":        { "category": "provenance",  "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Author"], "description": "Source authored by Author." },
+    "argues":            { "category": "claim",       "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Claim"], "description": "Document argues this Claim." },
+    "dependsOn":         { "category": "claim",       "directed": true,  "subjectTypes": ["Claim"], "objectTypes": ["Claim", "Question"], "description": "Claim depends on another Claim, or on a Question resolving a particular way." },
+    "supports":          { "category": "dialectical", "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Claim", "Concept"], "carriesEvidence": true, "description": "Source supports this Claim/Concept (edge carries quote + pageApprox + confidence + rationale)." },
+    "pressureTests":     { "category": "dialectical", "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Claim", "Concept"], "carriesEvidence": true, "description": "Source pressure-tests/challenges this Claim/Concept (edge carries evidence payload)." },
+    "contradicts":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Concept"], "objectTypes": ["Claim", "Concept"], "description": "Direct contradiction." },
+    "tensionWith":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Concept", "Tension"], "objectTypes": ["Claim", "Concept"], "description": "In tension with (both endpoints contested)." },
+    "supersedes":        { "category": "dialectical", "directed": true,  "subjectTypes": ["Claim", "Document"], "objectTypes": ["Claim", "Document"], "description": "Replaces a prior version." },
+    "flagsOpenQuestion": { "category": "dialectical", "directed": true,  "subjectTypes": ["Document", "Claim"], "objectTypes": ["Question"], "description": "Flags an open Question the node rests on." },
+    "wikiLinks":         { "category": "weak",        "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Document", "Concept", "Claim", "Question", "Source"], "description": "[[wikilink]] reference parsed from prose." },
+    "mentions":          { "category": "weak",        "directed": true,  "subjectTypes": ["Document"], "objectTypes": ["Concept", "Claim", "Source"], "description": "Free-text mention — navigation, not argument." }
+  },
+
+  "catalogLoaders": [
+    { "file": "catalogs/documents.json", "nodeType": "Document", "proseField": "file", "arrayFieldEdges": {
+      "partOf":            { "predicate": "partOf",            "dir": "out", "targetNs": "document" },
+      "covers":            { "predicate": "covers",            "dir": "out" },
+      "argues":            { "predicate": "argues",            "dir": "out", "targetNs": "claim" },
+      "cites":             { "predicate": "cites",             "dir": "out", "targetNs": "source" },
+      "flagsOpenQuestion": { "predicate": "flagsOpenQuestion", "dir": "out", "targetNs": "question" },
+      "hasStatus":         { "predicate": "hasStatus",         "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/concepts.json", "nodeType": "Concept", "arrayFieldEdges": {
+      "definedIn":   { "predicate": "definedIn",   "dir": "out", "targetNs": "document" },
+      "derivesFrom": { "predicate": "derivesFrom", "dir": "out", "targetNs": "concept" }
+    } },
+    { "file": "catalogs/claims.json", "nodeType": "Claim", "arrayFieldEdges": {
+      "argues":     { "predicate": "argues",     "dir": "in",  "targetNs": "document" },
+      "dependsOn":  { "predicate": "dependsOn",  "dir": "out" },
+      "supersedes": { "predicate": "supersedes", "dir": "out", "targetNs": "claim" },
+      "hasStatus":  { "predicate": "hasStatus",  "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/questions.json", "nodeType": "Question", "arrayFieldEdges": {} },
+    { "file": "catalogs/sources.json", "nodeType": "Source", "arrayFieldEdges": {
+      "authoredBy": { "predicate": "authoredBy", "dir": "out", "targetNs": "author" }
+    } },
+    { "file": "catalogs/authors.json", "nodeType": "Author", "arrayFieldEdges": {} },
+    { "file": "catalogs/tensions.json", "nodeType": "Tension", "arrayFieldEdges": {
+      "tensionWith": { "predicate": "tensionWith", "dir": "out" },
+      "contradicts": { "predicate": "contradicts", "dir": "out" }
+    } }
+  ],
+
+  "statusType": "Status",
+  "statuses": ["not-started", "skeleton", "in-progress", "drafted", "superseded"]
+}

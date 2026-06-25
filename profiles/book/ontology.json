@@ -1,0 +1,101 @@
+{
+  "version": "0.1.0",
+  "name": "book",
+  "description": "Illustrative profile: how the kernel scales to a richer domain — a nonfiction book working out a contested argument. Derived from the 'Lossy' reference implementation (the information-book repo), which is the full, living instantiation with catalogs and prose. This file ships the SCHEMA only; the copyrighted catalogs/content live in that repo. PipelineStage/Gate/Part in the reference are book-thesis-specific seeds and are intentionally omitted here.",
+
+  "namespacePriority": ["chapter", "note", "claim", "concept", "mechanism", "question", "case", "tension", "source", "author", "tradition", "status"],
+  "hubTransitTypes": ["Status"],
+  "statusType": "Status",
+
+  "nodeTypes": {
+    "Chapter":   { "ns": "chapter",   "color": "#4f8cff", "shape": "round-rectangle", "description": "A chapter in the outline." },
+    "Note":      { "ns": "note",      "color": "#94a3b8", "shape": "rectangle",       "description": "A markdown note (foundational essay or transcript)." },
+    "Mechanism": { "ns": "mechanism", "color": "#0ea5a3", "shape": "hexagon",         "description": "A named structural mechanism the book argues for." },
+    "Concept":   { "ns": "concept",   "color": "#f59e0b", "shape": "round-tag",       "description": "Cross-cutting concept." },
+    "Question":  { "ns": "question",  "color": "#b45309", "shape": "concave-hexagon", "description": "A foundational open question the book is resolving." },
+    "Claim":     { "ns": "claim",     "color": "#facc15", "shape": "round-tag",       "description": "A load-bearing claim, promoted from harvested prose." },
+    "Source":    { "ns": "source",    "color": "#a855f7", "shape": "rectangle",       "description": "A book/paper/post the work engages with." },
+    "Author":    { "ns": "author",    "color": "#7c3aed", "shape": "ellipse",         "description": "Author of one or more Sources." },
+    "Tradition": { "ns": "tradition", "color": "#db2777", "shape": "round-pentagon",  "description": "Intellectual lineage." },
+    "CaseStudy": { "ns": "case",      "color": "#0891b2", "shape": "barrel",          "description": "Worked example." },
+    "Tension":   { "ns": "tension",   "color": "#7f1d1d", "shape": "concave-hexagon", "description": "An open contradiction or trade-off held live." },
+    "Status":    { "ns": "status",    "color": "#6b7280", "shape": "ellipse",         "description": "Drafting status (hub-transit)." }
+  },
+
+  "predicateCategories": {
+    "structural":  { "color": "#0ea5a3", "description": "Containment, placement." },
+    "causal":      { "color": "#dc2626", "description": "Derivation, dependency." },
+    "provenance":  { "color": "#a855f7", "description": "Where a claim comes from." },
+    "dialectical": { "color": "#b45309", "description": "Tensions, contradictions, supersession, evidence." },
+    "claim":       { "color": "#facc15", "description": "Argument structure." },
+    "weak":        { "color": "#cbd5e1", "description": "Navigation only." }
+  },
+
+  "predicates": {
+    "partOf":            { "category": "structural",  "directed": true,  "subjectTypes": ["Chapter"], "objectTypes": ["Chapter"], "description": "Chapter belongs to a parent." },
+    "covers":            { "category": "structural",  "directed": true,  "subjectTypes": ["Chapter", "Note"], "objectTypes": ["Concept", "Mechanism", "Question", "Claim", "CaseStudy", "Tension"], "description": "Chapter/Note discusses this node." },
+    "definedIn":         { "category": "provenance",  "directed": true,  "subjectTypes": ["Concept", "Mechanism"], "objectTypes": ["Chapter", "Note"], "description": "Concept/Mechanism developed in this document." },
+    "hasStatus":         { "category": "structural",  "directed": true,  "subjectTypes": ["Chapter", "Claim"], "objectTypes": ["Status"], "description": "Has this drafting status." },
+    "derivesFrom":       { "category": "causal",      "directed": true,  "subjectTypes": ["Mechanism", "Concept"], "objectTypes": ["Mechanism", "Concept"], "description": "Derives from another." },
+    "enables":           { "category": "causal",      "directed": true,  "subjectTypes": ["Mechanism", "Concept"], "objectTypes": ["Mechanism", "Concept"], "description": "X enables Y." },
+    "cites":             { "category": "provenance",  "directed": true,  "subjectTypes": ["Chapter", "Note"], "objectTypes": ["Source"], "description": "Document cites a Source." },
+    "authoredBy":        { "category": "provenance",  "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Author"], "description": "Source authored by Author." },
+    "partOfTradition":   { "category": "provenance",  "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Tradition"], "description": "Source belongs to a Tradition." },
+    "evidencedBy":       { "category": "provenance",  "directed": true,  "subjectTypes": ["Claim", "Concept", "Mechanism"], "objectTypes": ["Source", "Note"], "description": "Evidenced by a Source/Note passage." },
+    "argues":            { "category": "claim",       "directed": true,  "subjectTypes": ["Chapter", "Note"], "objectTypes": ["Claim"], "description": "Document argues this Claim." },
+    "dependsOn":         { "category": "claim",       "directed": true,  "subjectTypes": ["Claim"], "objectTypes": ["Claim", "Question"], "description": "Claim depends on a Claim or a Question resolving." },
+    "supports":          { "category": "dialectical", "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Claim", "Mechanism", "Concept"], "carriesEvidence": true, "description": "Source supports this (with quote + page + confidence + rationale)." },
+    "pressureTests":     { "category": "dialectical", "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Claim", "Mechanism", "Concept"], "carriesEvidence": true, "description": "Source pressure-tests this." },
+    "tensionWith":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Concept", "Mechanism", "Tension"], "objectTypes": ["Claim", "Concept", "Mechanism"], "description": "In tension with." },
+    "contradicts":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Concept"], "objectTypes": ["Claim", "Concept"], "description": "Direct contradiction." },
+    "supersedes":        { "category": "dialectical", "directed": true,  "subjectTypes": ["Claim", "Chapter"], "objectTypes": ["Claim", "Chapter"], "description": "Replaces a prior version." },
+    "flagsOpenQuestion": { "category": "dialectical", "directed": true,  "subjectTypes": ["Chapter", "Note", "Claim"], "objectTypes": ["Question"], "description": "Flags an open Question." },
+    "wikiLinks":         { "category": "weak",        "directed": true,  "subjectTypes": ["Chapter", "Note"], "objectTypes": ["Chapter", "Note", "Concept", "Claim", "Question", "Source", "Mechanism", "CaseStudy"], "description": "[[wikilink]] from prose." },
+    "mentions":          { "category": "weak",        "directed": true,  "subjectTypes": ["Chapter", "Note"], "objectTypes": ["Concept", "Claim", "Source", "CaseStudy"], "description": "Free-text mention." }
+  },
+
+  "catalogLoaders": [
+    { "file": "catalogs/chapters.json", "nodeType": "Chapter", "proseField": "file", "arrayFieldEdges": {
+      "partOf":            { "predicate": "partOf",            "dir": "out", "targetNs": "chapter" },
+      "covers":            { "predicate": "covers",            "dir": "out" },
+      "argues":            { "predicate": "argues",            "dir": "out", "targetNs": "claim" },
+      "cites":             { "predicate": "cites",             "dir": "out", "targetNs": "source" },
+      "flagsOpenQuestion": { "predicate": "flagsOpenQuestion", "dir": "out", "targetNs": "question" },
+      "hasStatus":         { "predicate": "hasStatus",         "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/notes.json", "nodeType": "Note", "proseField": "file", "arrayFieldEdges": {
+      "covers": { "predicate": "covers", "dir": "out" },
+      "argues": { "predicate": "argues", "dir": "out", "targetNs": "claim" },
+      "cites":  { "predicate": "cites",  "dir": "out", "targetNs": "source" }
+    } },
+    { "file": "catalogs/mechanisms.json", "nodeType": "Mechanism", "arrayFieldEdges": {
+      "definedIn":   { "predicate": "definedIn",   "dir": "out" },
+      "derivesFrom": { "predicate": "derivesFrom", "dir": "out", "targetNs": "mechanism" },
+      "evidencedBy": { "predicate": "evidencedBy", "dir": "out" }
+    } },
+    { "file": "catalogs/concepts.json", "nodeType": "Concept", "arrayFieldEdges": {
+      "definedIn":   { "predicate": "definedIn",   "dir": "out" },
+      "derivesFrom": { "predicate": "derivesFrom", "dir": "out", "targetNs": "concept" },
+      "evidencedBy": { "predicate": "evidencedBy", "dir": "out" }
+    } },
+    { "file": "catalogs/questions.json", "nodeType": "Question", "arrayFieldEdges": {} },
+    { "file": "catalogs/claims.json", "nodeType": "Claim", "arrayFieldEdges": {
+      "dependsOn":  { "predicate": "dependsOn",  "dir": "out" },
+      "supersedes": { "predicate": "supersedes", "dir": "out", "targetNs": "claim" },
+      "hasStatus":  { "predicate": "hasStatus",  "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/sources.json", "nodeType": "Source", "arrayFieldEdges": {
+      "authoredBy":      { "predicate": "authoredBy",      "dir": "out", "targetNs": "author" },
+      "partOfTradition": { "predicate": "partOfTradition", "dir": "out", "targetNs": "tradition" }
+    } },
+    { "file": "catalogs/authors.json", "nodeType": "Author", "arrayFieldEdges": {} },
+    { "file": "catalogs/traditions.json", "nodeType": "Tradition", "arrayFieldEdges": {} },
+    { "file": "catalogs/case-studies.json", "nodeType": "CaseStudy", "arrayFieldEdges": {} },
+    { "file": "catalogs/tensions.json", "nodeType": "Tension", "arrayFieldEdges": {
+      "tensionWith": { "predicate": "tensionWith", "dir": "out" },
+      "contradicts": { "predicate": "contradicts", "dir": "out" }
+    } }
+  ],
+
+  "statuses": ["not-yet-drafted", "skeleton", "in-workshop", "drafted", "superseded"]
+}
