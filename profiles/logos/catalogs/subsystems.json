@@ -1,0 +1,10 @@
+[
+  { "id": "microkernel", "label": "Microkernel (MK)", "summary": "The minimal trusted core.", "mapsToLayer": ["logical-network"] },
+  { "id": "module-manager", "label": "Module Manager (MM)", "summary": "Loads and isolates modules.", "mapsToLayer": ["logical-network"] },
+  { "id": "chain", "label": "Chain — Logos Chain (CH)", "summary": "The credibly-neutral base ledger.", "mapsToLayer": ["logical-network"], "defendsAgainst": ["deplatforming"] },
+  { "id": "blend", "label": "Blend — libp2p-mix (BL)", "summary": "Transport-layer mixnet.", "mapsToLayer": ["logical-network"], "defendsAgainst": ["traffic-analysis"] },
+  { "id": "codex", "label": "Codex — storage (CO)", "summary": "Durable content-addressed storage.", "mapsToLayer": ["physical-network"] },
+  { "id": "waku", "label": "Messaging — Waku (MS)", "summary": "Metadata-protecting messaging.", "mapsToLayer": ["logical-network"], "defendsAgainst": ["metadata-surveillance"] },
+  { "id": "storage", "label": "Storage — Codex archival (ST)", "summary": "Archival storage tier.", "mapsToLayer": ["physical-network"] },
+  { "id": "basecamp", "label": "Basecamp / Status / Keycard (BC)", "summary": "User-facing apps and key custody.", "mapsToLayer": ["cyber-persona"] }
+]

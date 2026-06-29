@@ -1,0 +1,4 @@
+[
+  { "id": "intro", "label": "§1 Introduction", "summary": "Premises and motivation.", "covers": ["family:family-a1", "tier:tier-0"] },
+  { "id": "architecture", "label": "§4 Architecture", "summary": "Subsystem architecture.", "covers": ["family:family-c2", "tier:tier-5"] }
+]

@@ -1,0 +1,4 @@
+[
+  { "id": "family-a1", "label": "A1 — Civilisational premises", "summary": "The premise family grounding the argument.", "narrates": ["t0-001"] },
+  { "id": "family-c2", "label": "C2 — Censorship resistance", "summary": "The censorship-resistance narrative family.", "narrates": ["t4-001", "t5-ms-001"] }
+]

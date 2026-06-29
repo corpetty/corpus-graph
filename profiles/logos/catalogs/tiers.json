@@ -1,0 +1,9 @@
+[
+  { "id": "tier-0", "label": "Tier 0: Civilisational premises", "summary": "The civilisational premises the whole system rests on." },
+  { "id": "tier-1", "label": "Tier 1: Adversary / threat model", "summary": "The adversary and threat model." },
+  { "id": "tier-2", "label": "Tier 2: Civil-liberties roots", "summary": "Civil-liberties roots." },
+  { "id": "tier-3", "label": "Tier 3: Political-theoretic principles", "summary": "Political-theoretic principles." },
+  { "id": "tier-4", "label": "Tier 4: Architectural / institutional requirements", "summary": "Architectural and institutional requirements." },
+  { "id": "tier-5", "label": "Tier 5: Subsystem requirements", "summary": "Subsystem-level requirements." },
+  { "id": "tier-6", "label": "Tier 6: Operational, governance, community", "summary": "Operational, governance, and community requirements." }
+]

@@ -1,0 +1,4 @@
+[
+  { "id": "cryptographic-political", "label": "Cryptographic-political (cypherpunk)", "summary": "The cypherpunk tradition linking cryptography to political freedom." },
+  { "id": "political-theoretic", "label": "Political-theoretic", "summary": "Exit/voice and network-state political theory." }
+]

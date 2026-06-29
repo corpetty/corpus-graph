@@ -1,0 +1,21 @@
+{
+  "version": "0.1.0",
+  "description": "Projection for the logos profile. NOTE: this deliberately omits the 'claimsWithEvidence', 'contestedClaims', and 'editorialFlags' section kinds the book/software-docs profiles use. Those assume evidence flows Source->Claim as an IN-edge to the claim; Logos's evidence flows the other way (Requirement -evidencedBy-> Document, an OUT-edge), so corpus-graph's current renderer cannot surface evidencedBy quotes here. That mismatch is a documented finding (see README.md and docs/ROADMAP.md item 'Configurable evidence direction'). For now the bundle is a structural/causal neighbourhood projection via nodeList sections.",
+  "defaultHop": 2,
+  "tokenBudget": 20000,
+  "neverRender": ["mentions", "evidencedBy", "hasStatus", "belongsToTier", "belongsToSubTier", "landsIn", "covers", "narrates"],
+  "sections": [
+    { "id": "summary",     "kind": "centerSummary", "title": null },
+    { "id": "claims",      "kind": "nodeList", "nodeType": "Claim",      "title": "Claims realised" },
+    { "id": "laws",        "kind": "nodeList", "nodeType": "CausalLaw",   "title": "Causal laws it derives from" },
+    { "id": "concepts",    "kind": "nodeList", "nodeType": "Concept",     "title": "Concepts" },
+    { "id": "adversaries", "kind": "nodeList", "nodeType": "Adversary",   "title": "Adversaries addressed" },
+    { "id": "subsystems",  "kind": "nodeList", "nodeType": "Subsystem",   "title": "Realising subsystems" },
+    { "id": "families",    "kind": "nodeList", "nodeType": "Family",      "title": "Narrative families" },
+    { "id": "requirements","kind": "nodeList", "nodeType": "Requirement", "title": "Related requirements" },
+    { "id": "tiers",       "kind": "nodeList", "nodeType": "Tier",        "title": "Tiers" },
+    { "id": "sections",    "kind": "nodeList", "nodeType": "OutlineSection", "title": "Outline placement" },
+    { "id": "sources",     "kind": "sources",  "nodeType": "Source",      "title": "Sources cited" },
+    { "id": "tensions",    "kind": "nodeList", "nodeType": "Tension",     "title": "Open tensions" }
+  ]
+}

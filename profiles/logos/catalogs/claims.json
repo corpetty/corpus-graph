@@ -1,0 +1,5 @@
+[
+  { "id": "claim-1", "label": "Privacy is a precondition for political agency", "summary": "Without privacy, agency collapses under observation.", "hasStatus": ["Synthesis"] },
+  { "id": "claim-2", "label": "Exit disciplines power", "summary": "Credible exit constrains what power can do.", "hasStatus": ["Synthesis"] },
+  { "id": "claim-3", "label": "A base layer must be credibly neutral", "summary": "Neutrality is what makes the base layer trustworthy to adversarial parties.", "hasStatus": ["Direct"] }
+]

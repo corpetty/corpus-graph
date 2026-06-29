@@ -1,0 +1,5 @@
+[
+  { "id": "the-network-state", "label": "The Network State", "kind": "book", "summary": "On building new polities as networks first.", "authoredBy": ["balaji"], "partOfLineage": ["political-theoretic"] },
+  { "id": "cyphernomicon", "label": "The Cyphernomicon", "kind": "book", "summary": "Foundational cypherpunk FAQ / manifesto.", "authoredBy": ["tim-may"], "partOfLineage": ["cryptographic-political"] },
+  { "id": "exit-voice-loyalty", "label": "Exit, Voice, and Loyalty", "kind": "book", "summary": "How exit and voice discipline organisations and states.", "authoredBy": ["hirschman"], "partOfLineage": ["political-theoretic"] }
+]

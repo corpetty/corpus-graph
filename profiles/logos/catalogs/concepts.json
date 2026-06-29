@@ -1,0 +1,6 @@
+[
+  { "id": "sovereignty", "label": "Sovereignty", "summary": "Self-determination free of external coercion.", "aliases": ["self-sovereignty"] },
+  { "id": "legibility", "label": "Legibility", "summary": "The degree to which a population is observable/measurable by power.", "aliases": ["seeing like a state"] },
+  { "id": "exit", "label": "Exit", "summary": "The ability to leave a system as a check on its power.", "aliases": ["exit option"] },
+  { "id": "censorship-resistance", "label": "Censorship resistance", "summary": "The property that no actor can unilaterally deny service or speech." }
+]

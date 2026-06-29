@@ -1,0 +1,4 @@
+[
+  { "id": "tier-4a", "label": "Tier 4.A — Ten-priority list", "tier": "tier-4", "summary": "The ten-priority architectural list." },
+  { "id": "tier-5-ms", "label": "Tier 5 — Messaging subsystem", "tier": "tier-5", "summary": "Messaging-subsystem requirements." }
+]

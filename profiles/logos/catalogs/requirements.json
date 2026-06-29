@@ -1,0 +1,81 @@
+[
+  {
+    "id": "t0-001",
+    "label": "T0-001 — Agency requires privacy",
+    "summary": "Political agency presupposes a private sphere shielded from observation.",
+    "belongsToTier": ["tier-0"],
+    "belongsToFamily": ["family-a1"],
+    "realisesClaim": ["claim-1"],
+    "relatesToConcept": ["sovereignty", "censorship-resistance"],
+    "derivesFrom": ["law:law-1"],
+    "landsIn": ["intro"],
+    "cites": ["exit-voice-loyalty"],
+    "hasStatus": ["Synthesis"],
+    "evidencedBy": ["design-requirements-audit-v2"],
+    "flagsOpenQuestion": ["privacy-vs-legibility"]
+  },
+  {
+    "id": "t1-001",
+    "label": "T1-001 — Adversary: pervasive surveillance state",
+    "summary": "The system assumes a state-scale observer as the baseline adversary.",
+    "belongsToTier": ["tier-1"],
+    "addresses": ["surveillance-state"],
+    "relatesToConcept": ["legibility"],
+    "derivesFrom": ["law:law-1"],
+    "hasStatus": ["Direct"],
+    "evidencedBy": ["design-requirements-audit-v2"]
+  },
+  {
+    "id": "t3-001",
+    "label": "T3-001 — Exit must be credible",
+    "summary": "For exit to discipline power it must be genuinely available, not nominal.",
+    "belongsToTier": ["tier-3"],
+    "realisesClaim": ["claim-2"],
+    "relatesToConcept": ["exit"],
+    "derivesFrom": ["law:law-2"],
+    "precondition": ["t0-001"],
+    "cites": ["exit-voice-loyalty"],
+    "hasStatus": ["Synthesis"]
+  },
+  {
+    "id": "t4-001",
+    "label": "T4-001 — Credible neutrality of the base layer",
+    "summary": "The base ledger must not privilege any participant, or its guarantees are void.",
+    "belongsToTier": ["tier-4"],
+    "belongsToSubTier": ["tier-4a"],
+    "realisesClaim": ["claim-3"],
+    "relatesToConcept": ["censorship-resistance"],
+    "realisedBy": ["chain"],
+    "addresses": ["deplatforming"],
+    "derivesFrom": ["law:law-3"],
+    "landsIn": ["architecture"],
+    "hasStatus": ["Synthesis"]
+  },
+  {
+    "id": "t5-ms-001",
+    "label": "T5-MS-001 — Messaging metadata privacy (Waku)",
+    "summary": "Messaging must not leak who-talks-to-whom metadata to a network observer.",
+    "belongsToTier": ["tier-5"],
+    "belongsToSubTier": ["tier-5-ms"],
+    "realisedBy": ["waku"],
+    "addresses": ["metadata-surveillance"],
+    "relatesToConcept": ["censorship-resistance"],
+    "derivesFrom": ["requirement:t1-001"],
+    "landsIn": ["architecture"],
+    "cites": ["cyphernomicon"],
+    "hasStatus": ["Direct"],
+    "evidencedBy": ["design-requirements-audit-v2"]
+  },
+  {
+    "id": "t5-bl-001",
+    "label": "T5-BL-001 — Traffic-analysis resistance (Blend)",
+    "summary": "The transport layer must resist timing/volume correlation by a global observer.",
+    "belongsToTier": ["tier-5"],
+    "realisedBy": ["blend"],
+    "addresses": ["traffic-analysis"],
+    "relatesToConcept": ["censorship-resistance"],
+    "derivesFrom": ["requirement:t1-001"],
+    "subEntryOf": ["t5-ms-001"],
+    "hasStatus": ["Direct"]
+  }
+]

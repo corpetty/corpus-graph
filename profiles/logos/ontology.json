@@ -1,0 +1,121 @@
+{
+  "version": "0.1.0",
+  "name": "logos",
+  "description": "Schema-axis PORT of the Logos whitepaper graph (logos-co/logos-whitepaper/graph) onto the corpus-graph engine — a stress test of how cleanly a maximal 17-type / 26-predicate domain ontology maps onto the generalized kernel. This ships a faithful ontology + a SMALL representative sample of catalogs (not the full 1,045-node Logos graph, whose data lives in that repo). What this port demonstrates and where it strains is written up in this profile's README.md. Note: unlike the source graph-meta.json, every predicate here declares subjectTypes/objectTypes — direction that the Logos build kept implicit in parser code is made explicit and enforced here.",
+
+  "namespacePriority": ["requirement", "claim", "concept", "family", "law", "subsystem", "adversary", "tier", "subtier", "layer", "source", "author", "lineage", "section", "tension", "document", "status"],
+
+  "hubTransitTypes": ["Status", "Tier", "SubTier", "CyberspaceLayer", "OutlineSection"],
+  "statusType": "Status",
+  "statuses": ["Direct", "Synthesis", "Interpretive", "Contested", "FLAG-FOR-AUDIT"],
+
+  "nodeTypes": {
+    "Requirement":     { "ns": "requirement", "color": "#4f8cff", "shape": "round-rectangle", "description": "A T<n>-NNN design requirement." },
+    "Tier":            { "ns": "tier",        "color": "#1e3a8a", "shape": "diamond",         "description": "Tier 0..6 grouping (hub-transit)." },
+    "SubTier":         { "ns": "subtier",     "color": "#3b5998", "shape": "diamond",         "description": "Sub-tier grouping (hub-transit)." },
+    "Claim":           { "ns": "claim",       "color": "#facc15", "shape": "round-tag",       "description": "An outline claim through-line." },
+    "Family":          { "ns": "family",      "color": "#0ea5a3", "shape": "hexagon",         "description": "Narrative family (A1..E5)." },
+    "CausalLaw":       { "ns": "law",         "color": "#dc2626", "shape": "star",            "description": "One of the causal laws requirements derive from." },
+    "Source":          { "ns": "source",      "color": "#a855f7", "shape": "rectangle",       "description": "Primary text cited in requirements." },
+    "Author":          { "ns": "author",      "color": "#7c3aed", "shape": "ellipse",         "description": "Author of one or more sources." },
+    "Lineage":         { "ns": "lineage",     "color": "#db2777", "shape": "round-pentagon",  "description": "Intellectual tradition / lineage." },
+    "Concept":         { "ns": "concept",     "color": "#f59e0b", "shape": "round-tag",       "description": "Cross-cutting concept." },
+    "Adversary":       { "ns": "adversary",   "color": "#ef4444", "shape": "vee",             "description": "Adversary class / threat pattern." },
+    "Subsystem":       { "ns": "subsystem",   "color": "#10b981", "shape": "round-octagon",   "description": "A Logos subsystem (Chain / Codex / Waku / Blend / ...)." },
+    "CyberspaceLayer": { "ns": "layer",       "color": "#0891b2", "shape": "barrel",          "description": "Physical / Logical / Cyber-Persona (JP 3-12) — hub-transit." },
+    "OutlineSection":  { "ns": "section",     "color": "#64748b", "shape": "tag",             "description": "Whitepaper / outline section anchor (hub-transit)." },
+    "Document":        { "ns": "document",    "color": "#94a3b8", "shape": "rectangle",       "description": "A markdown file in the repo." },
+    "Status":          { "ns": "status",      "color": "#6b7280", "shape": "ellipse",         "description": "Audit status (hub-transit)." },
+    "Tension":         { "ns": "tension",     "color": "#b45309", "shape": "concave-hexagon", "description": "An open question or contested claim." }
+  },
+
+  "predicateCategories": {
+    "structural":  { "color": "#0ea5a3", "description": "Containment, grouping, placement." },
+    "causal":      { "color": "#dc2626", "description": "Derivation, dependency, threat-defence." },
+    "provenance":  { "color": "#a855f7", "description": "Where a claim comes from." },
+    "dialectical": { "color": "#b45309", "description": "Tensions, contradictions, supersession." },
+    "weak":        { "color": "#cbd5e1", "description": "Free-text mentions — navigation, not argument." }
+  },
+
+  "predicates": {
+    "belongsToTier":     { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Tier"], "description": "Requirement is in this Tier." },
+    "belongsToSubTier":  { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["SubTier"], "description": "Requirement is in this Sub-tier." },
+    "realisesClaim":     { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Claim"], "description": "Requirement realises a claim through-line." },
+    "relatesToConcept":  { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Concept"], "description": "Requirement anchors this cross-cutting Concept." },
+    "belongsToFamily":   { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Family"], "description": "Requirement is grouped under this Family." },
+    "narrates":          { "category": "structural",  "directed": true,  "subjectTypes": ["Family"], "objectTypes": ["Requirement"], "description": "Family narrates this Requirement." },
+    "hasStatus":         { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement", "Claim"], "objectTypes": ["Status"], "description": "Node has this audit status." },
+    "subEntryOf":        { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Requirement"], "description": "Sub-entry under a synthesis-header parent." },
+    "landsIn":           { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["OutlineSection"], "description": "Requirement lands in this outline section." },
+    "covers":            { "category": "structural",  "directed": true,  "subjectTypes": ["OutlineSection"], "objectTypes": ["Family", "Tier"], "description": "Outline section covers this Family / Tier." },
+    "realisedBy":        { "category": "structural",  "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Subsystem"], "description": "Requirement is realised by this Subsystem." },
+    "mapsToLayer":       { "category": "structural",  "directed": true,  "subjectTypes": ["Subsystem"], "objectTypes": ["CyberspaceLayer"], "description": "Subsystem maps to this Cyberspace layer." },
+
+    "derivesFrom":       { "category": "causal",      "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["CausalLaw", "Requirement"], "description": "Requirement derives from a Causal Law or upstream Requirement." },
+    "precondition":      { "category": "causal",      "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Requirement"], "description": "A precondition of (Requirement → Requirement)." },
+    "enables":           { "category": "causal",      "directed": true,  "subjectTypes": ["Requirement", "CausalLaw"], "objectTypes": ["Requirement"], "description": "Enables / is foundational for." },
+    "addresses":         { "category": "causal",      "directed": true,  "subjectTypes": ["Requirement"], "objectTypes": ["Adversary"], "description": "Requirement addresses an Adversary." },
+    "defendsAgainst":    { "category": "causal",      "directed": true,  "subjectTypes": ["Subsystem"], "objectTypes": ["Adversary"], "description": "Subsystem defends against an Adversary." },
+
+    "cites":             { "category": "provenance",  "directed": true,  "subjectTypes": ["Requirement", "Document"], "objectTypes": ["Source"], "description": "Requirement cites a Source." },
+    "authoredBy":        { "category": "provenance",  "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Author"], "description": "Source authored by Author." },
+    "partOfLineage":     { "category": "provenance",  "directed": true,  "subjectTypes": ["Source"], "objectTypes": ["Lineage"], "description": "Source belongs to a tradition / lineage." },
+    "evidencedBy":       { "category": "provenance",  "directed": true,  "subjectTypes": ["Requirement", "Claim", "Concept", "CausalLaw", "Family", "Adversary", "Subsystem"], "objectTypes": ["Document", "Source"], "carriesEvidence": true, "description": "Node evidenced by a Document line (carries quote + line)." },
+
+    "tensionWith":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Concept", "Requirement", "Tension"], "objectTypes": ["Claim", "Concept", "Requirement"], "description": "In tension with — both endpoints contested." },
+    "contradicts":       { "category": "dialectical", "directed": false, "subjectTypes": ["Claim", "Requirement"], "objectTypes": ["Claim", "Requirement"], "description": "Direct contradiction." },
+    "supersedes":        { "category": "dialectical", "directed": true,  "subjectTypes": ["Requirement", "Claim"], "objectTypes": ["Requirement", "Claim"], "description": "Replaces a prior entry." },
+    "flagsOpenQuestion": { "category": "dialectical", "directed": true,  "subjectTypes": ["Requirement", "Claim", "Document"], "objectTypes": ["Tension"], "description": "Flags a Tension / open question." },
+
+    "mentions":          { "category": "weak",        "directed": true,  "subjectTypes": ["Document", "Requirement"], "objectTypes": ["Concept", "Claim", "Source", "Requirement", "Subsystem"], "description": "Free-text mention — navigation, not argument." }
+  },
+
+  "catalogLoaders": [
+    { "file": "catalogs/tiers.json",        "nodeType": "Tier",            "arrayFieldEdges": {} },
+    { "file": "catalogs/subtiers.json",     "nodeType": "SubTier",         "arrayFieldEdges": {} },
+    { "file": "catalogs/layers.json",       "nodeType": "CyberspaceLayer", "arrayFieldEdges": {} },
+    { "file": "catalogs/subsystems.json",   "nodeType": "Subsystem",       "arrayFieldEdges": {
+      "mapsToLayer":    { "predicate": "mapsToLayer",    "dir": "out", "targetNs": "layer" },
+      "defendsAgainst": { "predicate": "defendsAgainst", "dir": "out", "targetNs": "adversary" }
+    } },
+    { "file": "catalogs/causal-laws.json",  "nodeType": "CausalLaw",       "arrayFieldEdges": {} },
+    { "file": "catalogs/concepts.json",     "nodeType": "Concept",         "arrayFieldEdges": {} },
+    { "file": "catalogs/claims.json",       "nodeType": "Claim",           "arrayFieldEdges": {
+      "hasStatus": { "predicate": "hasStatus", "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/families.json",     "nodeType": "Family",          "arrayFieldEdges": {
+      "narrates": { "predicate": "narrates", "dir": "out", "targetNs": "requirement" }
+    } },
+    { "file": "catalogs/adversaries.json",  "nodeType": "Adversary",       "arrayFieldEdges": {} },
+    { "file": "catalogs/sources.json",      "nodeType": "Source",          "arrayFieldEdges": {
+      "authoredBy":     { "predicate": "authoredBy",     "dir": "out", "targetNs": "author" },
+      "partOfLineage":  { "predicate": "partOfLineage",  "dir": "out", "targetNs": "lineage" }
+    } },
+    { "file": "catalogs/authors.json",      "nodeType": "Author",          "arrayFieldEdges": {} },
+    { "file": "catalogs/lineages.json",     "nodeType": "Lineage",         "arrayFieldEdges": {} },
+    { "file": "catalogs/sections.json",     "nodeType": "OutlineSection",  "arrayFieldEdges": {
+      "covers": { "predicate": "covers", "dir": "out" }
+    } },
+    { "file": "catalogs/requirements.json", "nodeType": "Requirement",     "arrayFieldEdges": {
+      "belongsToTier":    { "predicate": "belongsToTier",    "dir": "out", "targetNs": "tier" },
+      "belongsToSubTier": { "predicate": "belongsToSubTier", "dir": "out", "targetNs": "subtier" },
+      "realisesClaim":    { "predicate": "realisesClaim",    "dir": "out", "targetNs": "claim" },
+      "relatesToConcept": { "predicate": "relatesToConcept", "dir": "out", "targetNs": "concept" },
+      "belongsToFamily":  { "predicate": "belongsToFamily",  "dir": "out", "targetNs": "family" },
+      "realisedBy":       { "predicate": "realisedBy",       "dir": "out", "targetNs": "subsystem" },
+      "addresses":        { "predicate": "addresses",        "dir": "out", "targetNs": "adversary" },
+      "derivesFrom":      { "predicate": "derivesFrom",      "dir": "out" },
+      "precondition":     { "predicate": "precondition",     "dir": "out", "targetNs": "requirement" },
+      "subEntryOf":       { "predicate": "subEntryOf",       "dir": "out", "targetNs": "requirement" },
+      "landsIn":          { "predicate": "landsIn",          "dir": "out", "targetNs": "section" },
+      "cites":            { "predicate": "cites",            "dir": "out", "targetNs": "source" },
+      "evidencedBy":      { "predicate": "evidencedBy",      "dir": "out", "targetNs": "document" },
+      "flagsOpenQuestion":{ "predicate": "flagsOpenQuestion","dir": "out", "targetNs": "tension" },
+      "hasStatus":        { "predicate": "hasStatus",        "dir": "out", "targetNs": "status" }
+    } },
+    { "file": "catalogs/tensions.json",     "nodeType": "Tension",         "arrayFieldEdges": {
+      "tensionWith": { "predicate": "tensionWith", "dir": "out" }
+    } },
+    { "file": "catalogs/documents.json",    "nodeType": "Document",        "arrayFieldEdges": {} }
+  ]
+}

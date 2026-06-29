@@ -110,6 +110,12 @@ only the files it ships.
   one `hello` document.
 - **`book`** — illustrative richer schema (the *Lossy* book). Schema-only; the
   copyrighted prose lives in the reference repo.
+- **`logos`** — a schema-axis port of the [Logos whitepaper graph](https://github.com/logos-co/logos-whitepaper)
+  (17 node types, a 4-level Tier→SubTier→Family→Requirement containment spine). A
+  stress test of how a maximal domain ontology maps onto the kernel — builds 60
+  nodes / 79 edges / 0 warnings from a representative sample. What ported cleanly
+  and what strained is written up in [`profiles/logos/README.md`](profiles/logos/README.md)
+  and drives the [roadmap](docs/ROADMAP.md).
 
 ```bash
 make init NAME=my-corpus                # scaffold profiles/my-corpus from blank
@@ -149,6 +155,7 @@ server is the only optional dependency.
 - [`docs/MAPPING.md`](docs/MAPPING.md) — mapping your domain onto the kernel
 - [`docs/INTEGRATION.md`](docs/INTEGRATION.md) — wiring it into an AI dev/authoring loop
 - [`docs/ANALYSIS.md`](docs/ANALYSIS.md) — efficiency/scaling/maintenance analysis of the reference implementation
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — planned capabilities (automated extraction, chunking, triage, diff, doctor, hierarchy-aware projection), drawn from comparing against the Logos graph
 
 ## Licence
 

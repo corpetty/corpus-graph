@@ -1,0 +1,5 @@
+[
+  { "id": "physical-network", "label": "Physical Network", "summary": "JP 3-12 physical layer." },
+  { "id": "logical-network", "label": "Logical Network", "summary": "JP 3-12 logical layer." },
+  { "id": "cyber-persona", "label": "Cyber-Persona", "summary": "JP 3-12 cyber-persona layer." }
+]

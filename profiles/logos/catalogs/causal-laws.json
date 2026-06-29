@@ -1,0 +1,5 @@
+[
+  { "id": "law-1", "label": "LAW-1: Legibility enables control", "summary": "What can be seen can be controlled; observation precedes coercion." },
+  { "id": "law-2", "label": "LAW-2: Concentrated power coerces", "summary": "Power without a check tends toward coercion." },
+  { "id": "law-3", "label": "LAW-3: Cryptography shifts the offense/defence balance", "summary": "Strong cryptography lowers the cost of defence relative to attack." }
+]

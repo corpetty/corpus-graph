@@ -1,0 +1,6 @@
+[
+  { "id": "surveillance-state", "label": "Pervasive surveillance state", "summary": "A state actor with broad observation capability." },
+  { "id": "traffic-analysis", "label": "Traffic-analysis adversary", "summary": "An observer correlating traffic patterns and timing." },
+  { "id": "metadata-surveillance", "label": "Metadata surveillance", "summary": "An adversary harvesting communication metadata." },
+  { "id": "deplatforming", "label": "Deplatforming / censorship", "summary": "An intermediary that can deny service or remove actors." }
+]
