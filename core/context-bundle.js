@@ -111,18 +111,21 @@ export function buildBundle(ctx, rawCenter, opts = {}) {
       case 'claimsWithEvidence': {
         const claims = byType(sec.nodeType || 'Claim');
         if (!claims.length) return '';
+        const dir = sec.evidenceDirection || 'in';
         // Claims the center directly argues sort ahead of BFS-incidental ones.
         const direct = new Set(outEdges(center, sec.directPredicate || 'argues').map((e) => e.target));
         claims.sort((a, b) => (direct.has(b.id) ? 1 : 0) - (direct.has(a.id) ? 1 : 0));
         const ev = sec.evidencePredicates || ['supports', 'pressureTests'];
         const lines = [`## ${sec.title}`];
-        for (const c of claims) lines.push(renderClaim(c, ev));
+        for (const c of claims) lines.push(renderClaim(c, ev, dir));
         return lines.join('\n');
       }
       case 'contestedClaims': {
         const [pos, neg] = sec.evidencePredicates || ['supports', 'pressureTests'];
+        const dir = sec.evidenceDirection || 'in';
+        const evOf = (id, pred) => (dir === 'out' ? outEdges(id, pred) : inEdges(id, pred));
         const claims = byType(sec.nodeType || 'Claim').filter(
-          (c) => inEdges(c.id, pos).length && inEdges(c.id, neg).length,
+          (c) => evOf(c.id, pos).length && evOf(c.id, neg).length,
         );
         if (!claims.length) return '';
         return [`## ${sec.title}`, ...claims.map((c) => `- **${labelOf(c)}** (\`${c.id}\`)`)].join('\n');
@@ -165,10 +168,12 @@ export function buildBundle(ctx, rawCenter, opts = {}) {
       case 'editorialFlags': {
         const flags = [];
         const [pos, neg] = sec.evidencePredicates || ['supports', 'pressureTests'];
+        const dir = sec.evidenceDirection || 'in';
+        const evOf = (id, pred) => (dir === 'out' ? outEdges(id, pred) : inEdges(id, pred));
         const claims = byType(sec.nodeType || 'Claim');
         for (const c of claims) {
-          const sup = inEdges(c.id, pos).length;
-          const pt = inEdges(c.id, neg).length;
+          const sup = evOf(c.id, pos).length;
+          const pt = evOf(c.id, neg).length;
           if (!sup && !pt) flags.push(`⚠ unbacked claim: **${labelOf(c)}** has no evidence edge`);
           else if (sup && pt) flags.push(`⚖ contested: **${labelOf(c)}** (${sup} support / ${pt} pressure)`);
         }
@@ -182,7 +187,10 @@ export function buildBundle(ctx, rawCenter, opts = {}) {
     }
   }
 
-  function renderClaim(c, evPreds) {
+  // dir='in': evidence flows Source -pred-> claim (the evidence-bearer is the
+  // edge SUBJECT, e.g. supports/pressureTests). dir='out': evidence flows
+  // claim -pred-> Document (the bearer is the edge TARGET, e.g. evidencedBy).
+  function renderClaim(c, evPreds, dir = 'in') {
     const lines = [`\n### ${labelOf(c)}`];
     lines.push(`\`${c.id}\`${c.status ? ` · _${c.status}_` : ''}`);
     if (c.summary) lines.push(c.summary);
@@ -190,13 +198,15 @@ export function buildBundle(ctx, rawCenter, opts = {}) {
     if (deps.length) lines.push(`_Depends on: ${deps.join(', ')}._`);
     let any = false;
     for (const pred of evPreds) {
-      for (const e of inEdges(c.id, pred)) {
+      const edges = dir === 'out' ? outEdges(c.id, pred) : inEdges(c.id, pred);
+      for (const e of edges) {
         any = true;
-        const src = nodeById.get(e.source);
+        const otherId = dir === 'out' ? e.target : e.source;
+        const other = nodeById.get(otherId);
         const loc = [e.pageApprox && `p.${e.pageApprox}`, e.confidence].filter(Boolean).join(', ');
         const q = e.quote ? ` “${e.quote}”` : '';
         const r = e.rationale ? ` — ${e.rationale}` : '';
-        lines.push(`- **${pred}** · ${labelOf(src)} (\`${e.source}\`${loc ? `, ${loc}` : ''})${q}${r}`);
+        lines.push(`- **${pred}** · ${labelOf(other)} (\`${otherId}\`${loc ? `, ${loc}` : ''})${q}${r}`);
       }
     }
     if (!any) lines.push(`- _No source backing yet._`);

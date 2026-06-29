@@ -66,11 +66,12 @@ maps cleanly (17 types, containment-as-edges, hub-transit, domain-facts-as-catal
   hierarchy-blind: no breadcrumb (`Tier 4 ▸ 4.A ▸ T4-001`), no roll-up to a parent.
   Let a profile declare its containment predicates and have the exporter render a
   breadcrumb / "rolls up to" section.
-- **[#7 Configurable evidence direction](https://github.com/corpetty/corpus-graph/issues/7)** —
-  the evidence render kinds assume `Source -supports-> Claim` (an in-edge to the
+- **[#7 Configurable evidence direction](https://github.com/corpetty/corpus-graph/issues/7)** ✅ **done** —
+  the evidence render kinds assumed `Source -supports-> Claim` (an in-edge to the
   claim). Logos's `evidencedBy` runs the other way (`Requirement -evidencedBy->
-  Document`), so its evidence can't be surfaced today. Add a per-section
-  `evidenceDirection: in | out`.
+  Document`). Added a per-section `evidenceDirection: "in" | "out"` (default `"in"`,
+  so book/software-docs are unchanged); the `logos` profile now surfaces
+  `evidencedBy` quotes + line locators.
 
 ---
 
@@ -111,5 +112,5 @@ deep *and* disciplined.
 | [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |
 | [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | open |
-| [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | open |
+| [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | ✅ done |
 | [5](https://github.com/corpetty/corpus-graph/issues/5) | doctor / health-check | C | open |

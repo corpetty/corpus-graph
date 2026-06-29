@@ -49,14 +49,18 @@ make test    PROFILE=logos
 
 ## Where it strains (these drive `docs/ROADMAP.md`)
 
-1. **Evidence flows the wrong way for the renderer.** Logos's dominant edge —
-   `evidencedBy` (3,844 of 8,705, ~44%) — runs `Requirement -evidencedBy->
-   Document` (the evidenced thing points *out* to its source line). corpus-graph's
-   `claimsWithEvidence` / `contestedClaims` / `editorialFlags` render kinds assume
-   evidence flows `Source -supports-> Claim` as an **in-edge** to the claim. So
-   `evidencedBy` quotes **cannot be surfaced** by the current render kinds; this
-   profile's `render-spec.json` omits them and falls back to `nodeList`. → Roadmap:
-   *configurable evidence direction in render-spec.*
+1. **Evidence flows the opposite way from the renderer's default — now handled.**
+   Logos's dominant edge — `evidencedBy` (3,844 of 8,705, ~44%) — runs
+   `Requirement -evidencedBy-> Document` (the evidenced thing points *out* to its
+   source line), whereas corpus-graph's evidence render kinds default to the
+   `Source -supports-> Claim` **in-edge** model. **Resolved** by
+   [corpus-graph#7](https://github.com/corpetty/corpus-graph/issues/7): the render
+   kinds now take an `evidenceDirection: "in" | "out"` option. This profile's
+   `render-spec.json` sets `"evidenceDirection": "out"` on its requirements
+   section, so `evidencedBy` quotes + line locators surface directly (see a
+   `make context PROFILE=logos CENTER=t0-001` bundle). The `contestedClaims` /
+   `editorialFlags` kinds remain omitted only because Logos has no
+   supports-vs-pressureTests dialectic to flag.
 2. **Traversal/render is hierarchy-blind.** The containment *structure* ports as
    edges, but the BFS and renderer don't *exploit* it — there is no "roll up to the
    parent Tier" or breadcrumb (`Tier 4 ▸ 4.A ▸ T4-001`). Logos's exporter has
