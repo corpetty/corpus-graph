@@ -52,6 +52,8 @@ If your evidence edge points *from* the claim *to* its source (e.g. `Requirement
 
 **Step 4 — Mark high-degree types as hub-transit types.** Category-style super-hubs (a `Status` every node points at) would collapse a 2-hop bundle into one hop. List them in the exporter's hub-transit blocklist so they remain *reachable but not traversed through*.
 
+If your domain has a containment hierarchy (e.g. `Requirement -belongsToTier-> Tier`), add a `breadcrumb` render section listing those predicates broad→narrow (`"predicates": ["belongsToTier", "belongsToSubTier"]`). The exporter renders the center's ancestry (`Tier 4 ▸ Tier 4.A ▸ **T4-001**`), climbing the full edge set so ancestors show even when they are hub-transit nodes. The `logos` profile is a worked example.
+
 **Step 5 — Keep domain-specific structure as profile seeds/catalogs, not in the kernel.** Anything richer than the 8-type skeleton (the reference's `PipelineStage`, `Gate`, `Tradition`, `CaseStudy`) belongs in *your profile's* ontology and catalog files — not the shared kernel. The `book` profile is the illustrative example of a richer schema layered this way.
 
 ---

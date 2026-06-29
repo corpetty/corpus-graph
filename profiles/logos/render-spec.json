@@ -5,6 +5,7 @@
   "tokenBudget": 20000,
   "neverRender": ["mentions", "hasStatus", "belongsToTier", "belongsToSubTier", "landsIn", "covers", "narrates"],
   "sections": [
+    { "id": "breadcrumb",  "kind": "breadcrumb", "predicates": ["belongsToTier", "belongsToSubTier", "subEntryOf"], "title": null },
     { "id": "summary",     "kind": "centerSummary", "title": null },
     { "id": "requirements","kind": "claimsWithEvidence", "nodeType": "Requirement", "title": "Requirements in scope (with evidence)",
       "evidencePredicates": ["evidencedBy"], "evidenceDirection": "out" },

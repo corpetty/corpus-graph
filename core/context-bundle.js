@@ -108,6 +108,32 @@ export function buildBundle(ctx, rawCenter, opts = {}) {
         if (centerNode.sections?.length) lines.push(`\n**Sections:** ${centerNode.sections.join(' · ')}`);
         return lines.join('\n');
       }
+      case 'breadcrumb': {
+        // Containment ancestry of the center, broad -> narrow. The profile lists
+        // its containment predicates (e.g. belongsToTier then belongsToSubTier)
+        // in broad-to-narrow order; each is climbed transitively over the FULL
+        // edge set, so ancestors appear even when they are hub-transit nodes
+        // beyond the hop radius. Opt-in: renders nothing if the center has no
+        // containment ancestors, so non-hierarchical profiles are unaffected.
+        const preds = sec.predicates || [];
+        const pieces = [];
+        for (const pred of preds) {
+          const chain = [];
+          const seen = new Set([center]);
+          let cur = center;
+          for (;;) {
+            const e = outEdges(cur, pred).find((x) => !seen.has(x.target));
+            if (!e) break;
+            seen.add(e.target);
+            chain.push(e.target);
+            cur = e.target;
+          }
+          for (const id of chain.reverse()) pieces.push(labelOf(nodeById.get(id)));
+        }
+        if (!pieces.length) return '';
+        const head = sec.title ? `## ${sec.title}\n` : '';
+        return `${head}${pieces.join(' ▸ ')} ▸ **${labelOf(centerNode)}**`;
+      }
       case 'claimsWithEvidence': {
         const claims = byType(sec.nodeType || 'Claim');
         if (!claims.length) return '';

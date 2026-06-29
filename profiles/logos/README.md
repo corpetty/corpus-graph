@@ -61,11 +61,14 @@ make test    PROFILE=logos
    `make context PROFILE=logos CENTER=t0-001` bundle). The `contestedClaims` /
    `editorialFlags` kinds remain omitted only because Logos has no
    supports-vs-pressureTests dialectic to flag.
-2. **Traversal/render is hierarchy-blind.** The containment *structure* ports as
-   edges, but the BFS and renderer don't *exploit* it — there is no "roll up to the
-   parent Tier" or breadcrumb (`Tier 4 ▸ 4.A ▸ T4-001`). Logos's exporter has
-   tier/family-aware sections; corpus-graph treats every edge alike. → Roadmap:
-   *hierarchy-aware traversal/projection.*
+2. **Traversal/render was hierarchy-blind — now partly handled.** The containment
+   *structure* ports as edges, but the renderer didn't *exploit* it. **Resolved**
+   for breadcrumbs by [corpus-graph#6](https://github.com/corpetty/corpus-graph/issues/6):
+   this profile declares `belongsToTier`/`belongsToSubTier`/`subEntryOf` on a
+   `breadcrumb` section, so a requirement bundle now opens with
+   `Tier 4 ▸ Tier 4.A ▸ **T4-001**` (and `Tier 5 ▸ T5-MS-001 ▸ **T5-BL-001**` for a
+   sub-entry). Ancestors render even when they are hub-transit nodes beyond the hop
+   radius. A "what this Tier contains" roll-up section is still a possible follow-up.
 3. **Domain-fact-as-parsing-logic does not port.** `subsystemKeys` is not just
    data in Logos — the build *uses* it to parse requirement ids like `T5-MS-001`
    (`T5` → Tier 5, `MS` → Waku) during ingestion. corpus-graph's generic prose

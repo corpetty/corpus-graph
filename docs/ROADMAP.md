@@ -61,11 +61,14 @@ The [logos profile port](../profiles/logos/README.md) showed the *schema axis*
 maps cleanly (17 types, containment-as-edges, hub-transit, domain-facts-as-catalogs)
 — but exposed two places the *projection* is too coupled to the book/argument model.
 
-- **[#6 Hierarchy-aware traversal & projection](https://github.com/corpetty/corpus-graph/issues/6)** —
-  containment *structure* ports fine as directed edges, but the exporter is
-  hierarchy-blind: no breadcrumb (`Tier 4 ▸ 4.A ▸ T4-001`), no roll-up to a parent.
-  Let a profile declare its containment predicates and have the exporter render a
-  breadcrumb / "rolls up to" section.
+- **[#6 Hierarchy-aware traversal & projection](https://github.com/corpetty/corpus-graph/issues/6)** ✅ **done** —
+  containment *structure* ports fine as directed edges, but the exporter was
+  hierarchy-blind. Added a `breadcrumb` render kind: a profile lists its
+  containment predicates (broad→narrow, e.g. `belongsToTier`, `belongsToSubTier`,
+  `subEntryOf`) and the exporter climbs them over the full edge set to render
+  `Tier 4 ▸ Tier 4.A ▸ **T4-001**` — ancestors show even when they are hub-transit
+  nodes beyond the hop radius. Opt-in; profiles without containment predicates are
+  unaffected. (A "what this contains" roll-up section remains a possible follow-up.)
 - **[#7 Configurable evidence direction](https://github.com/corpetty/corpus-graph/issues/7)** ✅ **done** —
   the evidence render kinds assumed `Source -supports-> Claim` (an in-edge to the
   claim). Logos's `evidencedBy` runs the other way (`Requirement -evidencedBy->
@@ -111,6 +114,6 @@ deep *and* disciplined.
 | [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | open |
 | [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |
-| [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | open |
+| [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | ✅ done |
 | [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | ✅ done |
 | [5](https://github.com/corpetty/corpus-graph/issues/5) | doctor / health-check | C | open |
