@@ -5,4 +5,5 @@ export { buildBundle, loadGraph, resolveCenterId } from './context-bundle.js';
 export { harvest } from './harvest.js';
 export { aggregate } from './aggregate-interpretive.js';
 export { buildCatalog } from './build-catalog.js';
+export { doctor } from './doctor.js';
 export { checkEdge, typeOfId, evidencePredicates } from './direction-rules.js';

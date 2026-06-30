@@ -9,6 +9,7 @@ import { buildBundle } from '../core/context-bundle.js';
 import { harvest } from '../core/harvest.js';
 import { aggregate } from '../core/aggregate-interpretive.js';
 import { buildCatalog } from '../core/build-catalog.js';
+import { doctor } from '../core/doctor.js';
 import { writeJSON } from '../core/lib/io.js';
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -95,6 +96,17 @@ function main() {
       console.log(JSON.stringify(r.stats, null, 2));
       break;
     }
+    case 'doctor': {
+      const ctx = loadContext();
+      const probs = doctor(ctx);
+      const sym = { error: '✗', warn: '⚠', info: 'ℹ' };
+      for (const p of probs) console.log(`  ${sym[p.level] || '·'} ${p.level === 'info' ? '' : p.level + ': '}${p.msg}`);
+      const errors = probs.filter((p) => p.level === 'error').length;
+      const warns = probs.filter((p) => p.level === 'warn').length;
+      console.log(`[${ctx.profileName}] ${errors} error(s), ${warns} warning(s)`);
+      if (errors) process.exit(1);
+      break;
+    }
     case 'init': {
       const name = rest[0] || 'my-corpus';
       const dest = join(REPO_ROOT, 'profiles', name);
@@ -105,7 +117,7 @@ function main() {
       break;
     }
     default:
-      console.log('usage: corpus-graph <build|context|harvest|aggregate|catalog|extract-build|check|accept-stats|stats|init> [--profile=NAME] [...]');
+      console.log('usage: corpus-graph <build|context|harvest|aggregate|catalog|extract-build|check|accept-stats|stats|doctor|init> [--profile=NAME] [...]');
       process.exit(cmd ? 1 : 0);
   }
 }

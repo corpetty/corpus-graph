@@ -9,7 +9,7 @@ NODE    ?= node
 CG       = $(NODE) bin/corpus-graph.js
 export PROFILE
 
-.PHONY: build context harvest aggregate catalog extract-build test check accept-stats stats init help
+.PHONY: build context harvest aggregate catalog extract-build test check accept-stats stats doctor init help
 
 build: ## Rebuild the graph for $(PROFILE)
 	@$(CG) build
@@ -41,6 +41,9 @@ accept-stats: ## Bless the current counts as the new golden snapshot
 
 stats: ## Print build stats as JSON
 	@$(CG) stats
+
+doctor: ## Diagnose $(PROFILE) without rebuilding (staleness, refs, config)
+	@$(CG) doctor
 
 init: ## Scaffold a new profile: make init NAME=my-corpus
 	@$(CG) init $(NAME)

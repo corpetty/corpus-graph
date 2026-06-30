@@ -6,7 +6,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { loadContext } from './lib/config.js';
-import { buildGraph } from './build-graph.js';
+import { buildGraph, emit } from './build-graph.js';
+import { doctor } from './doctor.js';
 import { checkEdge } from './direction-rules.js';
 import { readJSON } from './lib/io.js';
 import { join } from 'node:path';
@@ -59,4 +60,10 @@ test('every Document prose file exists on disk', () => {
       assert.ok(existsSync(join(ctx.contentDir, n.file)), `missing prose: ${n.file}`);
     }
   }
+});
+
+test('doctor reports no errors for a freshly built profile', () => {
+  emit(ctx, { nodes, edges, stats }); // write fresh artifacts so the staleness check is clean
+  const errors = doctor(ctx).filter((p) => p.level === 'error');
+  assert.equal(errors.length, 0, errors.map((e) => e.msg).join('\n'));
 });

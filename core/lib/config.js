@@ -21,14 +21,21 @@ export function loadContext(profileName = resolveProfile()) {
   }
   const defaultDir = join(REPO_ROOT, 'config');
 
-  const ontology =
-    readJSONIf(join(profileDir, 'ontology.json')) ?? readJSON(join(defaultDir, 'ontology.json'));
-  const renderSpec =
-    readJSONIf(join(profileDir, 'render-spec.json')) ?? readJSON(join(defaultDir, 'render-spec.json'));
-  const harvestSignals =
-    readJSONIf(join(profileDir, 'harvest-signals.json')) ??
-    readJSON(join(defaultDir, 'harvest-signals.json'));
-  const slugAliases = readJSONIf(join(profileDir, 'slug-aliases.json'), {});
+  // A profile overrides only the files it ships; anything missing falls back to
+  // the default skeleton. Resolve the actual path so callers (e.g. doctor) can
+  // stat the file that was really used.
+  const pick = (name) => {
+    const p = join(profileDir, name);
+    return existsSync(p) ? p : join(defaultDir, name);
+  };
+  const ontologyPath = pick('ontology.json');
+  const renderSpecPath = pick('render-spec.json');
+  const harvestSignalsPath = pick('harvest-signals.json');
+  const slugAliasesPath = join(profileDir, 'slug-aliases.json');
+  const ontology = readJSON(ontologyPath);
+  const renderSpec = readJSON(renderSpecPath);
+  const harvestSignals = readJSON(harvestSignalsPath);
+  const slugAliases = readJSONIf(slugAliasesPath, {});
 
   // Derived lookups.
   const nsToType = {};
@@ -55,6 +62,10 @@ export function loadContext(profileName = resolveProfile()) {
     candidatesPath: join(outDir, 'claim-candidates.jsonl'),
     aggregatePath: join(outDir, 'interpretive-triples.jsonl'),
     aggregateNotesPath: join(outDir, 'interpretive-notes.json'),
+    ontologyPath,
+    renderSpecPath,
+    harvestSignalsPath,
+    slugAliasesPath,
     ontology,
     renderSpec,
     harvestSignals,

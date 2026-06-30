@@ -19,6 +19,7 @@ engine with the book-specific parts pulled out into config.
 make build                              # build the example graph (software-docs profile)
 make context CENTER=caching-guide       # emit a context bundle to stdout
 make test                               # golden snapshot + structural invariants
+make doctor                             # health-check: staleness, refs, config (no rebuild)
 make help                               # all targets
 ```
 

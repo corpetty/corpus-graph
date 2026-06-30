@@ -80,10 +80,14 @@ maps cleanly (17 types, containment-as-edges, hub-transit, domain-facts-as-catal
 
 ## Theme C — Ops & diagnostics
 
-- **[#5 doctor / health-check](https://github.com/corpetty/corpus-graph/issues/5)** —
-  mtime staleness vs every input (including the engine itself), dangling
-  catalog-ref prediction, missing-file and slug-alias validation — diagnosis
-  without a full rebuild. Catches the staleness class the golden snapshot can't.
+- **[#5 doctor / health-check](https://github.com/corpetty/corpus-graph/issues/5)** ✅ **done** —
+  `corpus-graph doctor` (or `make doctor`) diagnoses a profile without writing
+  anything: (1) **staleness** — on-disk derived graph mtime vs every input
+  *including the engine itself* (the class the golden snapshot can't catch, since
+  it rebuilds in memory); (2) **referential/direction/orphan** problems via a real
+  in-memory build (no emit, so it never diverges from the builder); (3)
+  **config validity** — render-spec sections and ontology wiring the build never
+  checks. Exits non-zero on a real problem.
 - **Future (not yet issued):**
   - *Reference manifest* — a corpus-wide source-path manifest (walk a references
     tree, slugify, log collisions) so `Source`/`Document` nodes get deep-link paths
@@ -116,4 +120,4 @@ deep *and* disciplined.
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |
 | [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | ✅ done |
 | [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | ✅ done |
-| [5](https://github.com/corpetty/corpus-graph/issues/5) | doctor / health-check | C | open |
+| [5](https://github.com/corpetty/corpus-graph/issues/5) | doctor / health-check | C | ✅ done |
