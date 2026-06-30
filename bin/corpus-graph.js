@@ -11,6 +11,7 @@ import { aggregate } from '../core/aggregate-interpretive.js';
 import { buildCatalog } from '../core/build-catalog.js';
 import { doctor } from '../core/doctor.js';
 import { extractProfile } from '../core/extract.js';
+import { runDiffCLI } from '../core/diff.js';
 import { writeJSON } from '../core/lib/io.js';
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -125,6 +126,11 @@ async function main() {
         console.error(`  ${r.source} — ${r.status}${extra}`);
       }
       console.log(`[${ctx.profileName}] ${summary.count} source(s), ${summary.totalKept} triples kept, ~$${summary.totalCost.toFixed(4)}. Run \`make build\` to fold them in.`);
+      break;
+    }
+    case 'diff': {
+      const code = runDiffCLI(rest);
+      if (code) process.exit(code);
       break;
     }
     case 'doctor': {

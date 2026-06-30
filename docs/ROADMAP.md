@@ -59,10 +59,13 @@ size unattended, the engine needs a runnable ingestion pipeline.
 - **[#3 Triage scoring/queue + cost model](https://github.com/corpetty/corpus-graph/issues/3)** —
   a ranked extraction queue with a projected token/cost estimate at score cutoffs,
   so a corpus owner can extract a budgeted subset deliberately.
-- **[#4 Extraction diff/eval harness](https://github.com/corpetty/corpus-graph/issues/4)** —
-  scoring an extraction against a reference on schema validity, verbatim-quote
-  fidelity, triple recall/precision, and hallucinated-id detection — the basis for
-  multi-model comparison and a regression guard on extraction changes.
+- **[#4 Extraction diff/eval harness](https://github.com/corpetty/corpus-graph/issues/4)** ✅ **done** —
+  `corpus-graph diff <candidate.jsonl> <reference.jsonl> [--source=<file>]
+  [--profile=<name>]` scores an extraction against a reference on **schema
+  validity**, **triple precision/recall/F1** over the `(s,p,o)` key set,
+  **verbatim-quote fidelity** (actually greps the source text), and
+  **hallucinated-id / bad-direction** count vs the closed-world catalog — the
+  basis for multi-model comparison and a regression guard on extraction changes.
 
 ---
 
@@ -128,7 +131,7 @@ deep *and* disciplined.
 | [1](https://github.com/corpetty/corpus-graph/issues/1) | Extraction runner (Anthropic + optional local) | A | ✅ done |
 | [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | ✅ done |
 | [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
-| [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |
+| [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | ✅ done |
 | [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | ✅ done |
 | [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | ✅ done |
 | [5](https://github.com/corpetty/corpus-graph/issues/5) | doctor / health-check | C | ✅ done |

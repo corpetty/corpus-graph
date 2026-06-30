@@ -23,6 +23,9 @@ harvest: ## Scan prose for candidate claims into the gitignored inbox
 extract: ## Run extraction: make extract ARGS="--source=<id>|--all [--backend=anthropic|openai|mock --model=...]"
 	@$(CG) extract $(ARGS)
 
+diff: ## Score extractions: make diff ARGS="cand.jsonl ref.jsonl --source=src.txt --profile=NAME"
+	@$(CG) diff $(ARGS)
+
 catalog: build ## Emit the closed-world extraction catalog for agents
 	@$(CG) catalog
 
