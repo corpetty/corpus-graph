@@ -253,7 +253,11 @@ export async function extractProfile(ctx, opts = {}) {
   const extractFrom = new Set(ctx.ontology.extractFrom || defaultFrom);
 
   let targets = [...nodeById.values()].filter((n) => extractFrom.has(n.type) && n.file);
-  if (opts.sourceId) {
+  if (opts.onlySources) {
+    // A triage-ordered subset (from `extract --queue` / `--budget`).
+    const order = new Map(opts.onlySources.map((id, i) => [id, i]));
+    targets = targets.filter((n) => order.has(n.id)).sort((a, b) => order.get(a.id) - order.get(b.id));
+  } else if (opts.sourceId) {
     const full = opts.sourceId.includes(':');
     targets = targets.filter((n) => n.id === opts.sourceId || (!full && n.id.endsWith(`:${opts.sourceId}`)));
     if (!targets.length) throw new Error(`source not found among extractable types: ${opts.sourceId}`);

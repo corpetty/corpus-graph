@@ -1,0 +1,7 @@
+OWASP Session Management — notes (illustrative source text).
+
+Session identifiers should be stored in cookies with the Secure and HttpOnly
+attributes set, so the value is not exposed to client-side script and is only
+transmitted over encrypted connections. Where a server-side session store is not
+configured, a signed cookie is an acceptable default provided the signature is
+verified on every request and tampered values are rejected.

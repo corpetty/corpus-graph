@@ -12,6 +12,7 @@ import { buildCatalog } from '../core/build-catalog.js';
 import { doctor } from '../core/doctor.js';
 import { extractProfile } from '../core/extract.js';
 import { runDiffCLI } from '../core/diff.js';
+import { triageProfile, formatTriageReport } from '../core/triage.js';
 import { writeJSON } from '../core/lib/io.js';
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -119,7 +120,15 @@ async function main() {
         force: rest.includes('--force'),
         dryRun: rest.includes('--dry-run'),
       };
-      if (!opts.sourceId && !rest.includes('--all')) throw new Error('extract: pass --source=<id> or --all');
+      const budgetFlag = get('budget');
+      if (budgetFlag || rest.includes('--queue')) {
+        const q = triageProfile(ctx, { model: opts.model, budget: budgetFlag ? Number(budgetFlag) : null });
+        opts.onlySources = q.sources.filter((r) => !r.already && (budgetFlag ? r.withinBudget : true)).map((r) => r.source);
+        console.error(`triage: ${opts.onlySources.length} source(s) selected${budgetFlag ? ` within budget $${budgetFlag}` : ' from the queue'}`);
+      }
+      if (!opts.sourceId && !rest.includes('--all') && !opts.onlySources) {
+        throw new Error('extract: pass --source=<id>, --all, --queue, or --budget=N');
+      }
       const summary = await extractProfile(ctx, opts);
       for (const r of summary.results) {
         const extra = r.kept != null ? ` (kept ${r.kept}, dropped ${r.dropped || 0}${r.cost != null ? `, ~$${r.cost.toFixed(4)}` : ''})` : '';
@@ -131,6 +140,25 @@ async function main() {
     case 'diff': {
       const code = runDiffCLI(rest);
       if (code) process.exit(code);
+      break;
+    }
+    case 'triage': {
+      const ctx = loadContext();
+      build(ctx);
+      buildCatalog(ctx);
+      const get = (k) => {
+        const f = rest.find((a) => a.startsWith(`--${k}=`));
+        return f ? f.slice(k.length + 3) : undefined;
+      };
+      const num = (k) => (get(k) ? Number(get(k)) : undefined);
+      const q = triageProfile(ctx, {
+        model: get('model'),
+        budget: num('budget'),
+        sourceTokensPerTriple: num('source-tokens-per-triple'),
+        outputTokensPerTriple: num('output-tokens-per-triple'),
+      });
+      console.log(formatTriageReport(q));
+      console.error(`queue -> data/${ctx.profileName}/triage-queue.json (consume with \`extract --queue\` / \`extract --budget=N\`)`);
       break;
     }
     case 'doctor': {
@@ -154,7 +182,7 @@ async function main() {
       break;
     }
     default:
-      console.log('usage: corpus-graph <build|context|harvest|extract|aggregate|catalog|extract-build|check|accept-stats|stats|doctor|init> [--profile=NAME] [...]');
+      console.log('usage: corpus-graph <build|context|harvest|extract|triage|diff|aggregate|catalog|extract-build|check|accept-stats|stats|doctor|init> [--profile=NAME] [...]');
       process.exit(cmd ? 1 : 0);
   }
 }

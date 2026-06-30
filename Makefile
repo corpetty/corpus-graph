@@ -26,6 +26,9 @@ extract: ## Run extraction: make extract ARGS="--source=<id>|--all [--backend=an
 diff: ## Score extractions: make diff ARGS="cand.jsonl ref.jsonl --source=src.txt --profile=NAME"
 	@$(CG) diff $(ARGS)
 
+triage: ## Rank sources + project extraction cost: make triage ARGS="--budget=2.50"
+	@$(CG) triage $(ARGS)
+
 catalog: build ## Emit the closed-world extraction catalog for agents
 	@$(CG) catalog
 

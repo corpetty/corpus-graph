@@ -1,0 +1,20 @@
+Web Almanac — caching and rendering notes (illustrative source text).
+
+Across the pages measured in the annual crawl, the large majority ship markup
+that is substantially static: most documents do not require per-request server
+rendering to produce their primary content. Sites that do render on the server
+tend to pair it with aggressive caching to keep per-request cost bounded.
+
+Cache hit ratios are sensitive to how URLs change between deploys. When asset
+URLs churn on every release, caches see a flood of cold keys and hit ratios fall
+until the new keys warm up. Teams that hash content into the URL (so a given byte
+sequence always maps to the same key) see steadier hit ratios, at the cost of
+needing an explicit invalidation or tagging mechanism when content is superseded
+rather than overwriting a key in place.
+
+The report also notes that time-to-first-byte is dominated by origin work on
+server-rendered routes, which is why streaming and edge caching show up
+repeatedly as mitigations. The headline takeaway for framework defaults is that
+server rendering buys freshness and a simpler mental model but must be paired
+with a caching strategy, while static delivery is cheaper to serve but staler and
+shifts the freshness burden onto the build and deploy pipeline.

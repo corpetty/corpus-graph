@@ -8,5 +8,6 @@ export { buildCatalog } from './build-catalog.js';
 export { doctor } from './doctor.js';
 export { extractProfile } from './extract.js';
 export { diffExtractions, formatDiffReport } from './diff.js';
+export { triageProfile, formatTriageReport } from './triage.js';
 export { getBackend, estimateCostUSD } from './lib/llm.js';
 export { checkEdge, typeOfId, evidencePredicates } from './direction-rules.js';

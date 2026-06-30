@@ -56,9 +56,13 @@ size unattended, the engine needs a runnable ingestion pipeline.
   dedup keeping the highest-confidence row. Chunk-level extractions are cached
   (`data/<profile>/chunks/<source>/chunk-NN.jsonl` + a manifest) so a re-run
   resumes; a `--max-chunks` guard caps runaway sources and logs what it drops.
-- **[#3 Triage scoring/queue + cost model](https://github.com/corpetty/corpus-graph/issues/3)** —
-  a ranked extraction queue with a projected token/cost estimate at score cutoffs,
-  so a corpus owner can extract a budgeted subset deliberately.
+- **[#3 Triage scoring/queue + cost model](https://github.com/corpetty/corpus-graph/issues/3)** ✅ **done** —
+  `corpus-graph triage` ranks the extractable sources by expected yield
+  (`sourceTokens / sourceTokensPerTriple`, a tunable heuristic — no model
+  hard-coded) and projects per-source + cumulative token/dollar cost, writing a
+  queue file. The runner consumes it: `extract --queue` (rank order) or
+  `extract --budget=N` (the cumulative-under-budget prefix). Already-extracted
+  sources sort last and are excluded from a budgeted run.
 - **[#4 Extraction diff/eval harness](https://github.com/corpetty/corpus-graph/issues/4)** ✅ **done** —
   `corpus-graph diff <candidate.jsonl> <reference.jsonl> [--source=<file>]
   [--profile=<name>]` scores an extraction against a reference on **schema
@@ -130,7 +134,7 @@ deep *and* disciplined.
 |---|---|---|---|
 | [1](https://github.com/corpetty/corpus-graph/issues/1) | Extraction runner (Anthropic + optional local) | A | ✅ done |
 | [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | ✅ done |
-| [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
+| [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | ✅ done |
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | ✅ done |
 | [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | ✅ done |
 | [7](https://github.com/corpetty/corpus-graph/issues/7) | Configurable evidence direction | B | ✅ done |
