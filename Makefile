@@ -9,7 +9,7 @@ NODE    ?= node
 CG       = $(NODE) bin/corpus-graph.js
 export PROFILE
 
-.PHONY: build context harvest aggregate catalog extract-build test check accept-stats stats doctor init help
+.PHONY: build context harvest extract aggregate catalog extract-build test check accept-stats stats doctor init help
 
 build: ## Rebuild the graph for $(PROFILE)
 	@$(CG) build
@@ -20,6 +20,9 @@ context: build ## Emit a context bundle: make context CENTER=<id> [ARGS="--hop=1
 harvest: ## Scan prose for candidate claims into the gitignored inbox
 	@$(CG) harvest
 
+extract: ## Run extraction: make extract ARGS="--source=<id>|--all [--backend=anthropic|openai|mock --model=...]"
+	@$(CG) extract $(ARGS)
+
 catalog: build ## Emit the closed-world extraction catalog for agents
 	@$(CG) catalog
 
@@ -29,12 +32,12 @@ aggregate: ## Validate + de-dup interpretive triples into the aggregate
 extract-build: ## catalog -> aggregate -> rebuild (after running extraction agents)
 	@$(CG) extract-build
 
-test: build ## Run the regression suite (snapshot + structural invariants)
-	@$(NODE) --test core/graph.test.js
+test: build ## Run the regression suite (snapshot + structural invariants + extract)
+	@$(NODE) --test core/*.test.js
 
 check: ## Strict build (warnings fatal) + tests — the CI gate
 	@STRICT=1 $(CG) check
-	@$(NODE) --test core/graph.test.js
+	@$(NODE) --test core/*.test.js
 
 accept-stats: ## Bless the current counts as the new golden snapshot
 	@$(CG) accept-stats

@@ -36,12 +36,19 @@ human pastes into a subagent. The Logos graph is overwhelmingly machine-extracte
 (`evidencedBy` alone is 3,844 of its 8,705 edges). To host a corpus of any real
 size unattended, the engine needs a runnable ingestion pipeline.
 
-- **[#1 Extraction runner](https://github.com/corpetty/corpus-graph/issues/1)** —
-  a programmatic runner against the Anthropic Messages API (prompt caching of
-  system+catalog blocks, concurrency workers, rate limiting, exponential backoff
-  on 429/529/5xx, resumability, oversized guards), with a pluggable backend so a
-  local/vLLM path can drop in. Reuses `build-catalog.js` (grounding) and
-  `aggregate-interpretive.js` (validation). *The single highest-value item.*
+- **[#1 Extraction runner](https://github.com/corpetty/corpus-graph/issues/1)** ✅ **done** —
+  `corpus-graph extract` (`make extract`): a programmatic, **resumable** runner.
+  Per source it sends the closed-world catalog + source text to a pluggable
+  backend and writes **re-validated** triples to `interpretive/<source>.jsonl`.
+  The Anthropic backend (opt-in `@anthropic-ai/sdk`) uses **structured outputs**
+  to force valid JSON, **prompt-caches** the system+catalog block (identical
+  across every source in a run), and inherits the SDK's 429/529/5xx backoff;
+  an OpenAI-compatible backend covers local/vLLM, and a stub backend makes it
+  testable with no key. Concurrency-limited, idempotent (skips already-extracted
+  unless `--force`), oversized-guarded (defers to #2), with honest per-source
+  token + cost logging. Every returned triple is re-checked against the same
+  direction-rules + closed-world catalog the aggregator uses, so a hallucinated
+  id or backwards edge is dropped at the runner.
 - **[#2 Source chunking + merge](https://github.com/corpetty/corpus-graph/issues/2)** —
   heading-aware token-bounded splitting + per-chunk manifest, then `(s,p,o)` dedup
   keeping highest confidence, so oversized sources become processable at all.
@@ -114,7 +121,7 @@ deep *and* disciplined.
 
 | # | Capability | Theme | Status |
 |---|---|---|---|
-| [1](https://github.com/corpetty/corpus-graph/issues/1) | Extraction runner (Anthropic + optional local) | A | open |
+| [1](https://github.com/corpetty/corpus-graph/issues/1) | Extraction runner (Anthropic + optional local) | A | ✅ done |
 | [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | open |
 | [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |

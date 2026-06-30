@@ -50,6 +50,8 @@ Five steps take you from "the default contract" to "my domain".
 
 If your evidence edge points *from* the claim *to* its source (e.g. `Requirement -evidencedBy-> Document`) rather than the default `Source -supports-> Claim`, set `"evidenceDirection": "out"` on that render section (default is `"in"`). The `logos` profile is a worked example.
 
+To run the **automated extraction runner** (`make extract` — corpus-graph#1), give each text source a `file` prop pointing to a file under the profile dir (e.g. `"file": "refs/rfc9111.txt"`), and optionally set top-level `"extractFrom": ["Reference"]` in `ontology.json` to the node types that are text sources (it defaults to the subject types of your evidence predicates). The runner sends the closed-world catalog + each source to an LLM and writes re-validated triples to `interpretive/<source>.jsonl`.
+
 **Step 4 — Mark high-degree types as hub-transit types.** Category-style super-hubs (a `Status` every node points at) would collapse a 2-hop bundle into one hop. List them in the exporter's hub-transit blocklist so they remain *reachable but not traversed through*.
 
 If your domain has a containment hierarchy (e.g. `Requirement -belongsToTier-> Tier`), add a `breadcrumb` render section listing those predicates broad→narrow (`"predicates": ["belongsToTier", "belongsToSubTier"]`). The exporter renders the center's ancestry (`Tier 4 ▸ Tier 4.A ▸ **T4-001**`), climbing the full edge set so ancestors show even when they are hub-transit nodes. The `logos` profile is a worked example.

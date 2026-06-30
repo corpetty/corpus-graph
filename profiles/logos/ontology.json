@@ -6,6 +6,7 @@
   "namespacePriority": ["requirement", "claim", "concept", "family", "law", "subsystem", "adversary", "tier", "subtier", "layer", "source", "author", "lineage", "section", "tension", "document", "status"],
 
   "hubTransitTypes": ["Status", "Tier", "SubTier", "CyberspaceLayer", "OutlineSection"],
+  "extractFrom": ["Document"],
   "statusType": "Status",
   "statuses": ["Direct", "Synthesis", "Interpretive", "Contested", "FLAG-FOR-AUDIT"],
 

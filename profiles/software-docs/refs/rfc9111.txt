@@ -1,0 +1,17 @@
+HTTP Caching — summary notes (illustrative source text for the extraction demo).
+
+A cache stores responses and reuses them to satisfy later requests, keyed by the
+request target and any headers the response varies on. A stored response is
+"fresh" until its explicit expiration time; after that a cache must validate it
+with the origin (for example via an entity-tag validator) before reuse. Caches
+determine reusability from the response's own content and validators rather than
+from out-of-band state, which is why content-addressed keys compose cleanly with
+freshness rules.
+
+Invalidation is a separate concern from key construction: a cache may evict or
+supersede a stored response without mutating the key that addressed it. Systems
+that derive keys from content therefore tend to pair immutable keys with an
+explicit invalidation signal rather than overwriting keys in place.
+
+(§ headings here are approximate and exist only so the extractor has a locator to
+cite.)

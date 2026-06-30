@@ -10,6 +10,7 @@ import { harvest } from '../core/harvest.js';
 import { aggregate } from '../core/aggregate-interpretive.js';
 import { buildCatalog } from '../core/build-catalog.js';
 import { doctor } from '../core/doctor.js';
+import { extractProfile } from '../core/extract.js';
 import { writeJSON } from '../core/lib/io.js';
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -26,7 +27,7 @@ function build(ctx, { strict = false } = {}) {
   return r;
 }
 
-function main() {
+async function main() {
   switch (cmd) {
     case 'build':
       build(loadContext());
@@ -96,6 +97,34 @@ function main() {
       console.log(JSON.stringify(r.stats, null, 2));
       break;
     }
+    case 'extract': {
+      const ctx = loadContext();
+      build(ctx); // need nodes for the closed-world catalog
+      buildCatalog(ctx);
+      const get = (k) => {
+        const f = rest.find((a) => a.startsWith(`--${k}=`));
+        return f ? f.slice(k.length + 3) : undefined;
+      };
+      const opts = {
+        backendName: get('backend') || 'anthropic',
+        sourceId: get('source'),
+        model: get('model'),
+        effort: get('effort'),
+        minConfidence: get('min-confidence'),
+        concurrency: get('concurrency') ? Number(get('concurrency')) : undefined,
+        maxTokens: get('max-tokens') ? Number(get('max-tokens')) : undefined,
+        force: rest.includes('--force'),
+        dryRun: rest.includes('--dry-run'),
+      };
+      if (!opts.sourceId && !rest.includes('--all')) throw new Error('extract: pass --source=<id> or --all');
+      const summary = await extractProfile(ctx, opts);
+      for (const r of summary.results) {
+        const extra = r.kept != null ? ` (kept ${r.kept}, dropped ${r.dropped || 0}${r.cost != null ? `, ~$${r.cost.toFixed(4)}` : ''})` : '';
+        console.error(`  ${r.source} — ${r.status}${extra}`);
+      }
+      console.log(`[${ctx.profileName}] ${summary.count} source(s), ${summary.totalKept} triples kept, ~$${summary.totalCost.toFixed(4)}. Run \`make build\` to fold them in.`);
+      break;
+    }
     case 'doctor': {
       const ctx = loadContext();
       const probs = doctor(ctx);
@@ -117,13 +146,13 @@ function main() {
       break;
     }
     default:
-      console.log('usage: corpus-graph <build|context|harvest|aggregate|catalog|extract-build|check|accept-stats|stats|doctor|init> [--profile=NAME] [...]');
+      console.log('usage: corpus-graph <build|context|harvest|extract|aggregate|catalog|extract-build|check|accept-stats|stats|doctor|init> [--profile=NAME] [...]');
       process.exit(cmd ? 1 : 0);
   }
 }
 
 try {
-  main();
+  await main();
 } catch (e) {
   console.error(`error: ${e.message}`);
   process.exit(1);

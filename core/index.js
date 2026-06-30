@@ -6,4 +6,6 @@ export { harvest } from './harvest.js';
 export { aggregate } from './aggregate-interpretive.js';
 export { buildCatalog } from './build-catalog.js';
 export { doctor } from './doctor.js';
+export { extractProfile } from './extract.js';
+export { getBackend, estimateCostUSD } from './lib/llm.js';
 export { checkEdge, typeOfId, evidencePredicates } from './direction-rules.js';

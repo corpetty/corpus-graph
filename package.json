@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node bin/corpus-graph.js build",
     "context": "node bin/corpus-graph.js context",
-    "test": "node --test core/graph.test.js"
+    "test": "node --test core/*.test.js"
   },
   "exports": {
     ".": "./core/index.js",
