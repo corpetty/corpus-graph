@@ -113,6 +113,8 @@ async function main() {
         minConfidence: get('min-confidence'),
         concurrency: get('concurrency') ? Number(get('concurrency')) : undefined,
         maxTokens: get('max-tokens') ? Number(get('max-tokens')) : undefined,
+        chunkTokens: get('chunk-tokens') ? Number(get('chunk-tokens')) : undefined,
+        maxChunks: get('max-chunks') ? Number(get('max-chunks')) : undefined,
         force: rest.includes('--force'),
         dryRun: rest.includes('--dry-run'),
       };

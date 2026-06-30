@@ -49,9 +49,13 @@ size unattended, the engine needs a runnable ingestion pipeline.
   token + cost logging. Every returned triple is re-checked against the same
   direction-rules + closed-world catalog the aggregator uses, so a hallucinated
   id or backwards edge is dropped at the runner.
-- **[#2 Source chunking + merge](https://github.com/corpetty/corpus-graph/issues/2)** —
-  heading-aware token-bounded splitting + per-chunk manifest, then `(s,p,o)` dedup
-  keeping highest confidence, so oversized sources become processable at all.
+- **[#2 Source chunking + merge](https://github.com/corpetty/corpus-graph/issues/2)** ✅ **done** —
+  built into the runner: a source larger than `--chunk-tokens` is split
+  heading-aware (`core/lib/chunk.js`, deterministic), extracted per chunk against
+  the same cached system+catalog block, and merged with `(subject,predicate,object)`
+  dedup keeping the highest-confidence row. Chunk-level extractions are cached
+  (`data/<profile>/chunks/<source>/chunk-NN.jsonl` + a manifest) so a re-run
+  resumes; a `--max-chunks` guard caps runaway sources and logs what it drops.
 - **[#3 Triage scoring/queue + cost model](https://github.com/corpetty/corpus-graph/issues/3)** —
   a ranked extraction queue with a projected token/cost estimate at score cutoffs,
   so a corpus owner can extract a budgeted subset deliberately.
@@ -122,7 +126,7 @@ deep *and* disciplined.
 | # | Capability | Theme | Status |
 |---|---|---|---|
 | [1](https://github.com/corpetty/corpus-graph/issues/1) | Extraction runner (Anthropic + optional local) | A | ✅ done |
-| [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | open |
+| [2](https://github.com/corpetty/corpus-graph/issues/2) | Source chunking + merge | A | ✅ done |
 | [3](https://github.com/corpetty/corpus-graph/issues/3) | Triage scoring/queue + cost model | A | open |
 | [4](https://github.com/corpetty/corpus-graph/issues/4) | Extraction diff/eval harness | A | open |
 | [6](https://github.com/corpetty/corpus-graph/issues/6) | Hierarchy-aware traversal & projection | B | ✅ done |
